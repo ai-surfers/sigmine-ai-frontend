@@ -1,6 +1,6 @@
 import Login from "@/components/login";
 
-export default function Home() {
+export default function Root() {
   return (
     <div>
       <Login />

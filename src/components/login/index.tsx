@@ -16,6 +16,7 @@ const Login = () => {
         style={{ marginBottom: "10px" }}
       ></Input>
       <Button>로그인</Button>
+      <Title level={5}>팀 관리자에게 코드를 요청하세요</Title>
     </LoginWrapper>
   );
 };
