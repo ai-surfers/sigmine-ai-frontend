@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ReactQueryProvider from "./providers/ReactQueryProvider";
+import RecoilProvider from "./providers/RecoilProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +18,9 @@ export default function RootLayout({
       <body
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ReactQueryProvider>
+          <RecoilProvider>{children}</RecoilProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
