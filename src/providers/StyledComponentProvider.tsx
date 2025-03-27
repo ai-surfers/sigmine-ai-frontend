@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from "styled-components";
 import { ConfigProvider } from "antd";
-// import GlobalStyle from "./GlobalStyle";
+import GlobalStyle from "@/app/globalStyle";
 // import theme from "./theme";
 import StyledComponentsRegistry from "./StyledComponentRegistry";
 
@@ -32,7 +32,7 @@ const Styles = ({ children }: StylesProps) => {
           },
         }}
       >
-        {/* <GlobalStyle /> */}
+        <GlobalStyle />
         {children}
       </ConfigProvider>
       {/* </ThemeProvider> */}
