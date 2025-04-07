@@ -57,7 +57,7 @@ const Setting = ({
             control={control}
             render={({ field }) => (
               <>
-                <Input {...field} />
+                <Input {...field} placeholder="입력 값을 입력해주세요." />
                 {errors.persona && (
                   <p style={{ color: "red" }}>{errors.persona.message}</p>
                 )}
@@ -77,7 +77,7 @@ const Setting = ({
                 control={control}
                 render={({ field }) => (
                   <>
-                    <Input {...field} />
+                    <Input {...field} placeholder="입력 값을 입력해주세요." />
                     {errors.example?.[index]?.value && (
                       <p style={{ color: "red" }}>
                         {errors.example[index].value?.message}
