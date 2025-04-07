@@ -3,10 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "antd";
 import Title from "antd/es/typography/Title";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
+import { StepType } from ".";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
@@ -18,7 +19,11 @@ type FormData = {
   example: { value: string }[];
 };
 
-const Setting = () => {
+const Setting = ({
+  setStep,
+}: {
+  setStep: Dispatch<SetStateAction<StepType>>;
+}) => {
   const {
     control,
     handleSubmit,
@@ -38,6 +43,7 @@ const Setting = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("폼 제출됨:", data);
+    setStep(2);
   };
 
   return (
@@ -49,7 +55,14 @@ const Setting = () => {
           <Controller
             name="persona"
             control={control}
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => (
+              <>
+                <Input {...field} />
+                {errors.persona && (
+                  <p style={{ color: "red" }}>{errors.persona.message}</p>
+                )}
+              </>
+            )}
           />
 
           <Title level={3}>스레드 예시 추가하기</Title>
@@ -62,7 +75,16 @@ const Setting = () => {
               <Controller
                 name={`example.${index}.value`}
                 control={control}
-                render={({ field }) => <Input {...field} />}
+                render={({ field }) => (
+                  <>
+                    <Input {...field} />
+                    {errors.example?.[index]?.value && (
+                      <p style={{ color: "red" }}>
+                        {errors.example[index].value?.message}
+                      </p>
+                    )}
+                  </>
+                )}
               />
             </div>
           ))}

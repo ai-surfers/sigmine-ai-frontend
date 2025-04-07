@@ -1,9 +1,5 @@
-import Setting from "@/components/thread/Setting";
+import Thread from "@/components/thread";
 
 export default function Home() {
-  return (
-    <div>
-      <Setting></Setting>
-    </div>
-  );
+  return <Thread />;
 }
