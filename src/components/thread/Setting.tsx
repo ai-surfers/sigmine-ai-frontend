@@ -99,6 +99,6 @@ const Setting = ({
 export default Setting;
 
 const MessageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
 `;
