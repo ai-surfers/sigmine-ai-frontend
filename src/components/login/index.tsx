@@ -26,6 +26,7 @@ const Login = () => {
     try {
       const data = await login(teamCode);
       setUser(data);
+      setTeamCode(teamCode);
       route.push(`/home`);
     } catch (err) {
       console.error(err, "로그인 실패");

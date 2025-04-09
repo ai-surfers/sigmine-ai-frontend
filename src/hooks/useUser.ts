@@ -19,6 +19,13 @@ export const useUser = () => {
     }));
   };
 
+  const setTeamCode = (teamCode: string | null) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      teamCode: teamCode,
+    }));
+  };
+
   // const setAccessToken = (token: string | null) => {
   //     setUserData((prevState) => ({
   //         ...prevState,
@@ -33,6 +40,7 @@ export const useUser = () => {
   return {
     userData,
     setUser,
+    setTeamCode,
     // setAccessToken,
     resetUserState,
   };
