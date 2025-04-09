@@ -11,6 +11,17 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {rules: {
+    ...reactHooks.configs.recommended.rules,
+    "react-refresh/only-export-components": [
+      "warn",
+      { allowConstantExport: true },
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+
+    // Next.js 권장 규칙 추가
+    ...next.configs.recommended.rules,
+  },}
 ];
 
 export default eslintConfig;
