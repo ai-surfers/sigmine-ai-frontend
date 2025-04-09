@@ -3,21 +3,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "antd";
 import Title from "antd/es/typography/Title";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { StepType } from ".";
+import { usePostSettings } from "@/hooks/mutations/usePostSettings";
+import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
-  example: z.array(z.object({ value: z.string().min(1, "필수") })),
+  examples: z.array(z.object({ content: z.string().min(1, "필수") })),
 });
 
-type FormData = {
+export interface PostSettingData {
   persona: string;
-  example: { value: string }[];
-};
+  examples: { content: string }[];
+}
 
 const Setting = ({
   setStep,
@@ -28,23 +31,42 @@ const Setting = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<PostSettingData>({
     resolver: zodResolver(schema),
     defaultValues: {
       persona: "",
-      example: [{ value: "" }],
+      examples: [{ content: "" }],
     },
   });
 
   const { fields, append } = useFieldArray({
-    name: "example",
+    name: "examples",
     control,
   });
 
-  const onSubmit = (data: FormData) => {
+  const { mutate: postSettings } = usePostSettings({
+    onSuccess(res) {
+      console.log("Success", res);
+      setStep(2);
+    },
+    onError(e) {
+      console.error("Failed", e);
+    },
+  });
+
+  const { userData } = useUser();
+  const router = useRouter();
+
+  const onSubmit = (data: PostSettingData) => {
     console.log("폼 제출됨:", data);
-    setStep(2);
+    postSettings({ settings: data, teamCode: userData.teamCode ?? "" });
   };
+
+  useEffect(() => {
+    if (!userData?.teamCode) {
+      router.push("/"); // 유저 정보 없을 경우 루트로 이동
+    }
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -73,14 +95,14 @@ const Setting = ({
               style={{ display: "flex", gap: "8px", marginBottom: "8px" }}
             >
               <Controller
-                name={`example.${index}.value`}
+                name={`examples.${index}.content`}
                 control={control}
                 render={({ field }) => (
                   <>
                     <Input {...field} placeholder="입력 값을 입력해주세요." />
-                    {errors.example?.[index]?.value && (
+                    {errors.examples?.[index]?.content && (
                       <p style={{ color: "red" }}>
-                        {errors.example[index].value?.message}
+                        {errors.examples[index].content?.message}
                       </p>
                     )}
                   </>
@@ -88,7 +110,7 @@ const Setting = ({
               />
             </div>
           ))}
-          <Button onClick={() => append({ value: "" })}>추가하기</Button>
+          <Button onClick={() => append({ content: "" })}>추가하기</Button>
           <Button htmlType="submit">저장</Button>
         </MessageWrapper>
       </div>
