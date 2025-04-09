@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [teamCode, setTeamCode] = useState("");
-  const { setUser } = useUser();
+  const { setUserTeamName, setUserTeamCode, userData } = useUser();
   const route = useRouter();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +25,12 @@ const Login = () => {
 
     try {
       const data = await login(teamCode);
-      setUser(data);
-      setTeamCode(teamCode);
-      route.push(`/home`);
+      if (data) {
+        setUserTeamName(data.team_name);
+        setUserTeamCode(teamCode);
+        console.log(userData);
+        route.push(`/home`);
+      }
     } catch (err) {
       console.error(err, "로그인 실패");
     }

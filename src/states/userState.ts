@@ -4,13 +4,13 @@ import { atom } from "recoil";
 type UserType = {
   isLogin: boolean;
   teamCode: string | null;
-  user: LoginResponse | null;
+  teamName: string | null;
 };
 
 export const initialUserState = {
   isLogin: false,
   teamCode: null,
-  user: null,
+  teamName: null,
 };
 
 export const userState = atom<UserType>({

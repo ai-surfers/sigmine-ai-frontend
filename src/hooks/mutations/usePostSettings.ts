@@ -1,14 +1,9 @@
 import { BaseResponse, POST } from "@/apis/client";
-import { PostSettingData } from "@/components/thread/Setting";
+import { SettingParmsType } from "@/types/threads";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-interface PostSettingProps {
-  settings: PostSettingData;
-  teamCode: string;
-}
-
-async function postSettings({ settings, teamCode }: PostSettingProps) {
+async function postSettings({ settings, teamCode }: SettingParmsType) {
   const { data } = await POST<boolean>(`threads/settings`, settings, {
     headers: {
       "team-code": teamCode,
@@ -24,7 +19,7 @@ export interface PostSettingAsyncs {
 
 export const usePostSettings = ({ onSuccess, onError }: PostSettingAsyncs) => {
   return useMutation({
-    mutationFn: ({ settings, teamCode }: PostSettingProps) =>
+    mutationFn: ({ settings, teamCode }: SettingParmsType) =>
       postSettings({ settings, teamCode }),
     onSuccess: onSuccess,
     onError: onError,

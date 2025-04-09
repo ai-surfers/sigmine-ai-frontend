@@ -11,15 +11,15 @@ import { LoginResponse } from "@/types/auth";
 export const useUser = () => {
   const [userData, setUserData] = useRecoilState(userState);
 
-  const setUser = (userData: LoginResponse | null) => {
+  const setUserTeamName = (teamName: string) => {
     setUserData((prevState) => ({
       ...prevState,
       isLogin: true,
-      user: userData,
+      teamName: teamName,
     }));
   };
 
-  const setTeamCode = (teamCode: string | null) => {
+  const setUserTeamCode = (teamCode: string | null) => {
     setUserData((prevState) => ({
       ...prevState,
       teamCode: teamCode,
@@ -39,8 +39,8 @@ export const useUser = () => {
 
   return {
     userData,
-    setUser,
-    setTeamCode,
+    setUserTeamName,
+    setUserTeamCode,
     // setAccessToken,
     resetUserState,
   };

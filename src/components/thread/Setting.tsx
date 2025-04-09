@@ -11,27 +11,28 @@ import { StepType } from ".";
 import { usePostSettings } from "@/hooks/mutations/usePostSettings";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
+import { SettingType } from "@/types/threads";
+import { useSettingsQuery } from "@/hooks/queries/useSettings";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
   examples: z.array(z.object({ content: z.string().min(1, "필수") })),
 });
 
-export interface PostSettingData {
-  persona: string;
-  examples: { content: string }[];
-}
-
 const Setting = ({
   setStep,
 }: {
   setStep: Dispatch<SetStateAction<StepType>>;
 }) => {
+  const { userData } = useUser();
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<PostSettingData>({
+  } = useForm<SettingType>({
     resolver: zodResolver(schema),
     defaultValues: {
       persona: "",
@@ -54,19 +55,24 @@ const Setting = ({
     },
   });
 
-  const { userData } = useUser();
-  const router = useRouter();
-
-  const onSubmit = (data: PostSettingData) => {
+  const onSubmit = (data: SettingType) => {
     console.log("폼 제출됨:", data);
     postSettings({ settings: data, teamCode: userData.teamCode ?? "" });
   };
+
+  const { data } = useSettingsQuery(userData.teamCode ?? "");
 
   useEffect(() => {
     if (!userData?.teamCode) {
       router.push("/"); // 유저 정보 없을 경우 루트로 이동
     }
-  });
+  }, [userData]);
+
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
