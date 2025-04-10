@@ -40,3 +40,16 @@ export interface PostThreadsAsyncs<T> {
   onSuccess: (res: BaseResponse<T>) => void;
   onError: (e: AxiosError) => void;
 }
+
+export interface FullContentBodyType {
+  first_sentence: string;
+  reference: string;
+}
+
+export interface FullContentParamsType
+  extends FullContentBodyType,
+    WithTeamCode {}
+
+export interface FullContentResponseType {
+  full_contents: string;
+}

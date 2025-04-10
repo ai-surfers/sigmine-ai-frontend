@@ -10,7 +10,8 @@ import { BaseSteps, ReferenceType } from "@/types/threads";
 import { usePostFirstSentence } from "@/hooks/mutations/usePostFirstSentence";
 import { useUser } from "@/hooks/useUser";
 import { useSetRecoilState } from "recoil";
-import { firstSentenceState } from "@/states/threadState";
+import { firstSentenceState, referenceState } from "@/states/threadState";
+import { useState } from "react";
 
 const schema = z.object({
   reference: z.string().min(1, "필수"),
@@ -29,7 +30,10 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
   });
 
   const { userData } = useUser();
+
+  const [tmpReference, setTmpReference] = useState({ reference: "" });
   const setFirstSentence = useSetRecoilState(firstSentenceState);
+  const setReference = useSetRecoilState(referenceState);
 
   const onSubmit = (data: ReferenceType) => {
     console.log("폼 제출됨:", data);
@@ -37,12 +41,14 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
       ...data,
       teamCode: userData.teamCode ?? "",
     });
+    setTmpReference(data);
   };
 
   const { mutate: postFirstSentence } = usePostFirstSentence({
     onSuccess(res) {
       console.log("Success", res);
       setFirstSentence(res.data);
+      setReference(tmpReference);
       setStep(4);
     },
     onError(e) {
