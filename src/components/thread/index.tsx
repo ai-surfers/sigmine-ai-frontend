@@ -5,8 +5,7 @@ import Setting from "./Setting";
 import GetFirstSentence from "./GetFirstSentence";
 import SetContents from "./SetContents";
 import GetBody from "./GetBody";
-
-export type StepType = 1 | 2 | 3 | 4;
+import { StepType } from "@/types/threads";
 
 const Thread = () => {
   const [step, setStep] = useState<StepType>(1);

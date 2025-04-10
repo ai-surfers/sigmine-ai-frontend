@@ -7,11 +7,10 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
-import { StepType } from ".";
 import { usePostSettings } from "@/hooks/mutations/usePostSettings";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
-import { SettingType } from "@/types/threads";
+import { SettingType, StepType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
 
 const schema = z.object({
