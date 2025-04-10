@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "antd";
+import { Button, Flex, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -75,8 +75,8 @@ const Setting = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <MessageWrapper>
+      <Flex vertical gap={30}>
+        <div>
           <Title level={3}>스레드 페르소나 설정하기</Title>
           <Title level={4}>페르소나를 입력해주세요</Title>
           <Controller
@@ -91,7 +91,8 @@ const Setting = ({
               </>
             )}
           />
-
+        </div>
+        <div>
           <Title level={3}>스레드 예시 추가하기</Title>
           <Title level={4}>학습시키고 싶은 문제를 입력하세요</Title>
           {fields.map((field, index) => (
@@ -117,8 +118,8 @@ const Setting = ({
           ))}
           <Button onClick={() => append({ content: "" })}>추가하기</Button>
           <Button htmlType="submit">저장</Button>
-        </MessageWrapper>
-      </div>
+        </div>
+      </Flex>
     </form>
   );
 };
