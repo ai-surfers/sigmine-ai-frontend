@@ -1,0 +1,3 @@
+[submodule "sigmine-frontend-envs"]
+	path = sigmine-frontend-envs
+	url = https://github.com/ai-surfers/sigmine-frontend-envs.git
