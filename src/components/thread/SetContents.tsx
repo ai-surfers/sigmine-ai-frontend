@@ -6,29 +6,25 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Title from "antd/es/typography/Title";
 import { Button, Input } from "antd";
-import { BaseSteps } from "./GetFirstSentence";
+import { BaseSteps, ContentsType } from "@/types/threads";
 
 const schema = z.object({
   contents: z.string().min(1, "필수"),
 });
-
-type FormData = {
-  contents: string;
-};
 
 const SetContents = ({ step, setStep }: BaseSteps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ContentsType>({
     resolver: zodResolver(schema),
     defaultValues: {
       contents: "",
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: ContentsType) => {
     console.log("폼 제출됨:", data);
     setStep(3);
   };
