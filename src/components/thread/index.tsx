@@ -13,7 +13,6 @@ const Thread = () => {
   return (
     <Flex vertical gap={30}>
       <Setting setStep={setStep} />
-      <SetContents step={step} setStep={setStep} />
       <GetFirstSentence step={step} setStep={setStep} />
       <GetBody step={step} setStep={setStep} />
     </Flex>

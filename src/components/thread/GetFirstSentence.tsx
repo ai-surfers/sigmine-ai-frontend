@@ -49,14 +49,14 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
       console.log("Success", res);
       setFirstSentence(res.data);
       setReference(tmpReference);
-      setStep(4);
+      setStep(3);
     },
     onError(e) {
       console.error("Failed", e);
     },
   });
   return (
-    <Wrapper $isVisible={step >= 3}>
+    <Wrapper $isVisible={step >= 2}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Title level={3}>스레드 첫 문장 만들기</Title>
         <Title level={4}>내용을 간단하게 입력해주세요</Title>

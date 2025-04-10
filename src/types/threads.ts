@@ -2,7 +2,7 @@ import { BaseResponse } from "@/apis/client";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
 
-export type StepType = 1 | 2 | 3 | 4;
+export type StepType = 1 | 2 | 3;
 
 export interface BaseSteps {
   step: StepType;

@@ -55,7 +55,7 @@ const GetBody = ({ step }: BaseSteps) => {
   };
 
   return (
-    <Wrapper $isVisible={step >= 4}>
+    <Wrapper $isVisible={step >= 3}>
       <Flex vertical gap={30}>
         <Title level={5}>
           10개의 후보들 중에서 마음에 드는 첫 문장을 선택해주세요! 선택해주신 첫
