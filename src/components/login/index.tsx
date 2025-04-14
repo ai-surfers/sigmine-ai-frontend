@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input, Button } from "antd";
 import Title from "antd/es/typography/Title";
-import { login, useLogin } from "@/hooks/queries/useLogin";
+import { login } from "@/hooks/queries/useLogin";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { LOCALSTORAGE_KEYS, setLocalStorage } from "@/utils/storageUtils";
+import { useAutoLogin } from "@/hooks/useAutoLogin";
 
 const Login = () => {
   const [teamCode, setTeamCode] = useState("");
@@ -25,10 +26,10 @@ const Login = () => {
     }
 
     try {
-      const data = await login(teamCode);
+      const { data } = await login(teamCode);
       if (data) {
         setUserTeamName(data.team_name);
-        setLocalStorage(LOCALSTORAGE_KEYS.ACCESS_TOKEN, teamCode);
+        setLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE, teamCode);
         console.log(userData);
         route.push(`/home`);
       }
@@ -36,6 +37,14 @@ const Login = () => {
       console.error(err, "로그인 실패");
     }
   };
+
+  useAutoLogin();
+
+  useEffect(() => {
+    if (userData.isLogin) {
+      route.push(`/home`);
+    }
+  }, [userData]);
 
   return (
     <LoginWrapper>

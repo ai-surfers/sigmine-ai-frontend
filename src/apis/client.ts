@@ -15,12 +15,12 @@ export const API = axios.create({
  */
 API.interceptors.request.use(
   async (config) => {
-    const accessToken = getLocalStorage(LOCALSTORAGE_KEYS.ACCESS_TOKEN);
+    const teamCode = getLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE);
 
-    console.log(accessToken);
+    console.log(teamCode);
 
-    if (accessToken) {
-      config.headers["team-code"] = `${accessToken}`;
+    if (teamCode) {
+      config.headers["team-code"] = `${teamCode}`;
     }
 
     // if (accessToken) {
