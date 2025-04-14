@@ -1,12 +1,16 @@
 import { BaseResponse } from "@/apis/client";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 
 export type StepType = 1 | 2 | 3;
 
-export interface BaseSteps {
+export interface BaseSteps extends RefType {
   step: StepType;
   setStep: Dispatch<SetStateAction<StepType>>;
+}
+
+export interface RefType {
+  scrollRef: RefObject<HTMLDivElement | null>;
 }
 
 export interface SettingType {

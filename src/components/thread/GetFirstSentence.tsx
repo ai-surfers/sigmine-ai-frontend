@@ -5,19 +5,20 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Title from "antd/es/typography/Title";
-import { Button, Input } from "antd";
+import { Button, Flex, Input, Spin } from "antd";
 import { BaseSteps, ReferenceType } from "@/types/threads";
 import { usePostFirstSentence } from "@/hooks/mutations/usePostFirstSentence";
 import { useUser } from "@/hooks/useUser";
 import { useSetRecoilState } from "recoil";
 import { firstSentenceState, referenceState } from "@/states/threadState";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useScrollBottom } from "@/hooks/useScrollBottom";
 
 const schema = z.object({
   reference: z.string().min(1, "필수"),
 });
 
-const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
+const GetFirstSentence = ({ step, setStep, scrollRef }: BaseSteps) => {
   const {
     control,
     handleSubmit,
@@ -34,14 +35,15 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
   const setReference = useSetRecoilState(referenceState);
 
   const onSubmit = (data: ReferenceType) => {
+    setStep(2);
     console.log("폼 제출됨:", data);
-    postFirstSentence({
+    postFirstSentence.mutate({
       ...data,
     });
     setTmpReference(data);
   };
 
-  const { mutate: postFirstSentence } = usePostFirstSentence({
+  const postFirstSentence = usePostFirstSentence({
     onSuccess(res) {
       console.log("Success", res);
       setFirstSentence(res.data);
@@ -52,6 +54,15 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
       console.error("Failed", e);
     },
   });
+
+  const scrollToBottom = useScrollBottom(scrollRef);
+
+  useEffect(() => {
+    if (postFirstSentence.isPending) {
+      scrollToBottom();
+    }
+  }, [postFirstSentence.isPending]);
+
   return (
     <Wrapper $isVisible={step >= 2}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,6 +82,11 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
         />
         <Button htmlType="submit">생성하기</Button>
       </form>
+      {postFirstSentence.isPending && (
+        <Flex justify="center" style={{ width: "100%", height: "100px" }}>
+          <Spin />
+        </Flex>
+      )}
     </Wrapper>
   );
 };

@@ -1,17 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
-import { Button, Flex } from "antd";
+import { Button, Flex, Spin } from "antd";
 import { BaseSteps } from "@/types/threads";
 import { useRecoilValue } from "recoil";
 import { firstSentenceState, referenceState } from "@/states/threadState";
 import Title from "antd/es/typography/Title";
-import { useMutation } from "@tanstack/react-query";
-import { useUser } from "@/hooks/useUser";
 import { usePostFullContents } from "@/hooks/mutations/usePostFullContents";
 import FinalResult from "./FinalResult";
+import { useScrollBottom } from "@/hooks/useScrollBottom";
 
 const schema = z.object({
   selected: z.string().min(1, "하나 이상 선택해주세요!"),
@@ -19,7 +18,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const GetBody = ({ step }: BaseSteps) => {
+const GetBody = ({ step, setStep, scrollRef }: BaseSteps) => {
   const {
     control,
     handleSubmit,
@@ -33,8 +32,9 @@ const GetBody = ({ step }: BaseSteps) => {
   const reference = useRecoilValue(referenceState);
 
   const [fullContent, setFullContent] = useState("");
+  const scrollToBottom = useScrollBottom(scrollRef);
 
-  const { mutate: postFullContents } = usePostFullContents({
+  const postFullContents = usePostFullContents({
     onSuccess(res) {
       console.log("Success", res);
       setFullContent(res.data.full_contents);
@@ -45,12 +45,25 @@ const GetBody = ({ step }: BaseSteps) => {
   });
 
   const onSubmit = (data: FormData) => {
+    setStep(3);
     console.log("선택된 항목:", data.selected);
-    postFullContents({
+    postFullContents.mutate({
       reference: reference.reference,
       first_sentence: data.selected,
     });
   };
+
+  useEffect(() => {
+    if (postFullContents.isPending) {
+      scrollToBottom();
+    }
+  }, [postFullContents]);
+
+  useEffect(() => {
+    if (step === 3) {
+      setFullContent(""); // ✅ 결과 초기화
+    }
+  }, [step]);
 
   return (
     <Wrapper $isVisible={step >= 3}>
@@ -93,7 +106,13 @@ const GetBody = ({ step }: BaseSteps) => {
 
           <Button htmlType="submit">스레드 내용 만들기</Button>
         </form>
-        {fullContent.length > 1 && <FinalResult initialResult={fullContent} />}
+        {postFullContents.isPending && <Spin />}
+        {!postFullContents.isPending && fullContent.length > 1 && (
+          <FinalResult
+            initialResult={fullContent}
+            scrollToBottom={scrollToBottom}
+          />
+        )}
       </Flex>
     </Wrapper>
   );
