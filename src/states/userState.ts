@@ -3,7 +3,7 @@ import { atom } from "recoil";
 
 export const initialUserState = {
   isLogin: false,
-  teamCode: null,
+  accessToken: null,
   teamName: null,
 };
 

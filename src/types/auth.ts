@@ -4,6 +4,6 @@ export interface LoginResponse {
 
 export type UserType = {
   isLogin: boolean;
-  teamCode: string | null;
+  accessToken: string | null;
   teamName: string | null;
 };

@@ -7,7 +7,6 @@ import {
 import { useMutation } from "@tanstack/react-query";
 
 async function postFullContents({
-  teamCode,
   first_sentence,
   reference,
 }: FullContentParamsType) {
@@ -16,11 +15,6 @@ async function postFullContents({
     {
       first_sentence,
       reference,
-    },
-    {
-      headers: {
-        "team-code": teamCode,
-      },
     }
   );
   return data;
@@ -31,12 +25,8 @@ export const usePostFullContents = ({
   onError,
 }: PostThreadsAsyncs<FullContentResponseType>) => {
   return useMutation({
-    mutationFn: ({
-      teamCode,
-      first_sentence,
-      reference,
-    }: FullContentParamsType) =>
-      postFullContents({ teamCode, first_sentence, reference }),
+    mutationFn: ({ first_sentence, reference }: FullContentParamsType) =>
+      postFullContents({ first_sentence, reference }),
     onSuccess: onSuccess,
     onError: onError,
   });

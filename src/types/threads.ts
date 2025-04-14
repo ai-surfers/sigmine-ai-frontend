@@ -18,7 +18,7 @@ interface WithTeamCode {
   teamCode: string;
 }
 
-export interface SettingParmsType extends WithTeamCode {
+export interface SettingParmsType {
   settings: SettingType;
 }
 
@@ -30,7 +30,7 @@ export interface ReferenceType {
   reference: string;
 }
 
-export interface FirstSenteceParamsType extends WithTeamCode, ReferenceType {}
+export interface FirstSenteceParamsType extends ReferenceType {}
 
 export interface FirstSentenceResponseType {
   first_sentence_candidates: string[];
@@ -46,9 +46,7 @@ export interface FullContentBodyType {
   reference: string;
 }
 
-export interface FullContentParamsType
-  extends FullContentBodyType,
-    WithTeamCode {}
+export interface FullContentParamsType extends FullContentBodyType {}
 
 export interface FullContentResponseType {
   full_contents: string;

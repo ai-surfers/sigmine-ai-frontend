@@ -56,13 +56,13 @@ const Setting = ({
 
   const onSubmit = (data: SettingType) => {
     console.log("폼 제출됨:", data);
-    postSettings({ settings: data, teamCode: userData.teamCode ?? "" });
+    postSettings({ settings: data });
   };
 
-  const { data } = useSettingsQuery(userData.teamCode ?? "");
+  const { data } = useSettingsQuery();
 
   useEffect(() => {
-    if (!userData?.teamCode) {
+    if (!userData?.accessToken) {
       router.push("/"); // 유저 정보 없을 경우 루트로 이동
     }
   }, [userData]);

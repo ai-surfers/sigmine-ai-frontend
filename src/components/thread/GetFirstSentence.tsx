@@ -29,8 +29,6 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
     },
   });
 
-  const { userData } = useUser();
-
   const [tmpReference, setTmpReference] = useState({ reference: "" });
   const setFirstSentence = useSetRecoilState(firstSentenceState);
   const setReference = useSetRecoilState(referenceState);
@@ -39,7 +37,6 @@ const GetFirstSentence = ({ step, setStep }: BaseSteps) => {
     console.log("폼 제출됨:", data);
     postFirstSentence({
       ...data,
-      teamCode: userData.teamCode ?? "",
     });
     setTmpReference(data);
   };

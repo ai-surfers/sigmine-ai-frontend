@@ -29,7 +29,6 @@ const GetBody = ({ step }: BaseSteps) => {
     defaultValues: { selected: "" },
   });
 
-  const { userData } = useUser();
   const firstSentences = useRecoilValue(firstSentenceState);
   const reference = useRecoilValue(referenceState);
 
@@ -50,7 +49,6 @@ const GetBody = ({ step }: BaseSteps) => {
     postFullContents({
       reference: reference.reference,
       first_sentence: data.selected,
-      teamCode: userData.teamCode ?? "",
     });
   };
 

@@ -7,10 +7,11 @@ import Title from "antd/es/typography/Title";
 import { login, useLogin } from "@/hooks/queries/useLogin";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
+import { LOCALSTORAGE_KEYS, setLocalStorage } from "@/utils/storageUtils";
 
 const Login = () => {
   const [teamCode, setTeamCode] = useState("");
-  const { setUserTeamName, setUserTeamCode, userData } = useUser();
+  const { setUserTeamName, userData } = useUser();
   const route = useRouter();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,7 @@ const Login = () => {
       const data = await login(teamCode);
       if (data) {
         setUserTeamName(data.team_name);
-        setUserTeamCode(teamCode);
+        setLocalStorage(LOCALSTORAGE_KEYS.ACCESS_TOKEN, teamCode);
         console.log(userData);
         route.push(`/home`);
       }
