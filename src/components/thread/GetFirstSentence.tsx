@@ -6,19 +6,22 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Title from "antd/es/typography/Title";
 import { Button, Flex, Input, Spin } from "antd";
-import { BaseSteps, ReferenceType } from "@/types/threads";
+import { ReferenceType, RefType } from "@/types/threads";
 import { usePostFirstSentence } from "@/hooks/mutations/usePostFirstSentence";
-import { useUser } from "@/hooks/useUser";
-import { useSetRecoilState } from "recoil";
-import { firstSentenceState, referenceState } from "@/states/threadState";
-import { Suspense, useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  firstSentenceState,
+  referenceState,
+  stepState,
+} from "@/states/threadState";
+import { useEffect, useState } from "react";
 import { useScrollBottom } from "@/hooks/useScrollBottom";
 
 const schema = z.object({
   reference: z.string().min(1, "필수"),
 });
 
-const GetFirstSentence = ({ step, setStep, scrollRef }: BaseSteps) => {
+const GetFirstSentence = ({ scrollRef }: RefType) => {
   const {
     control,
     handleSubmit,
@@ -33,9 +36,10 @@ const GetFirstSentence = ({ step, setStep, scrollRef }: BaseSteps) => {
   const [tmpReference, setTmpReference] = useState({ reference: "" });
   const setFirstSentence = useSetRecoilState(firstSentenceState);
   const setReference = useSetRecoilState(referenceState);
+  const [step, setStep] = useRecoilState(stepState);
 
   const onSubmit = (data: ReferenceType) => {
-    setStep(2);
+    setStep({ step: 1 });
     console.log("폼 제출됨:", data);
     postFirstSentence.mutate({
       ...data,
@@ -48,7 +52,7 @@ const GetFirstSentence = ({ step, setStep, scrollRef }: BaseSteps) => {
       console.log("Success", res);
       setFirstSentence(res.data);
       setReference(tmpReference);
-      setStep(3);
+      setStep({ step: 2 });
     },
     onError(e) {
       console.error("Failed", e);
@@ -64,7 +68,7 @@ const GetFirstSentence = ({ step, setStep, scrollRef }: BaseSteps) => {
   }, [postFirstSentence.isPending]);
 
   return (
-    <Wrapper $isVisible={step >= 2}>
+    <Wrapper $isVisible={step.step >= 1}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Title level={3}>스레드 첫 문장 만들기</Title>
         <Title level={4}>내용을 간단하게 입력해주세요</Title>

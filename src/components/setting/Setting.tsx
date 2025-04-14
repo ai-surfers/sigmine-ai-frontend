@@ -1,35 +1,24 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Input, Spin } from "antd";
+import { Button, Flex, Input, message, Spin } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { Dispatch, SetStateAction, Suspense, useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { usePostSettings } from "@/hooks/mutations/usePostSettings";
-import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
-import { RefType, SettingType, StepType } from "@/types/threads";
+
+import { SettingType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
 import TextArea from "antd/es/input/TextArea";
-import { useScrollBottom } from "@/hooks/useScrollBottom";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
   examples: z.array(z.object({ content: z.string().min(1, "필수") })),
 });
 
-const Setting = ({
-  setStep,
-  scrollRef,
-}: {
-  setStep: Dispatch<SetStateAction<StepType>>;
-} & RefType) => {
-  const { userData } = useUser();
-  const router = useRouter();
-  const scrollToBottom = useScrollBottom(scrollRef);
-
+const Setting = () => {
   const {
     control,
     handleSubmit,
@@ -51,7 +40,7 @@ const Setting = ({
   const { mutate: postSettings } = usePostSettings({
     onSuccess(res) {
       console.log("Success", res);
-      setStep(2);
+      message.success("설정이 저장되었습니다.");
     },
     onError(e) {
       console.error("Failed", e);
@@ -61,16 +50,9 @@ const Setting = ({
   const onSubmit = (data: SettingType) => {
     console.log("폼 제출됨:", data);
     postSettings({ settings: data });
-    scrollToBottom();
   };
 
   const { data, isLoading } = useSettingsQuery();
-
-  useEffect(() => {
-    if (!userData?.isLogin) {
-      router.push("/"); // 유저 정보 없을 경우 루트로 이동
-    }
-  }, [userData]);
 
   // 기존 세팅값이 있을 경우 form에 세팅
   useEffect(() => {

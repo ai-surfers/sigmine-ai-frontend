@@ -1,16 +1,22 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import Setting from "./Setting";
+import React, { useEffect, useRef } from "react";
 import GetFirstSentence from "./GetFirstSentence";
 import GetBody from "./GetBody";
-import { StepType } from "@/types/threads";
 import { Flex } from "antd";
+import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 const Thread = () => {
-  const [step, setStep] = useState<StepType>(1);
-
+  const { userData } = useUser();
+  const router = useRouter();
   const bodyRef = useRef<HTMLDivElement>(null); // 단계 이동시 스크롤할 때 사용할 ref
+
+  useEffect(() => {
+    if (!userData?.isLogin) {
+      router.push("/"); // 유저 정보 없을 경우 루트로 이동
+    }
+  }, [userData]);
 
   return (
     <Flex
@@ -23,9 +29,8 @@ const Thread = () => {
         scrollBehavior: "smooth",
       }}
     >
-      <Setting setStep={setStep} scrollRef={bodyRef} />
-      <GetFirstSentence step={step} setStep={setStep} scrollRef={bodyRef} />
-      <GetBody step={step} setStep={setStep} scrollRef={bodyRef} />
+      <GetFirstSentence scrollRef={bodyRef} />
+      <GetBody scrollRef={bodyRef} />
     </Flex>
   );
 };

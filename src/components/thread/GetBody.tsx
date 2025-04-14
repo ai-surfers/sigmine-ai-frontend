@@ -4,9 +4,13 @@ import { Controller, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { Button, Flex, Spin } from "antd";
-import { BaseSteps } from "@/types/threads";
-import { useRecoilValue } from "recoil";
-import { firstSentenceState, referenceState } from "@/states/threadState";
+import { RefType } from "@/types/threads";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  firstSentenceState,
+  referenceState,
+  stepState,
+} from "@/states/threadState";
 import Title from "antd/es/typography/Title";
 import { usePostFullContents } from "@/hooks/mutations/usePostFullContents";
 import FinalResult from "./FinalResult";
@@ -18,7 +22,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const GetBody = ({ step, setStep, scrollRef }: BaseSteps) => {
+const GetBody = ({ scrollRef }: RefType) => {
   const {
     control,
     handleSubmit,
@@ -30,6 +34,7 @@ const GetBody = ({ step, setStep, scrollRef }: BaseSteps) => {
 
   const firstSentences = useRecoilValue(firstSentenceState);
   const reference = useRecoilValue(referenceState);
+  const [step, setStep] = useRecoilState(stepState);
 
   const [fullContent, setFullContent] = useState("");
   const scrollToBottom = useScrollBottom(scrollRef);
@@ -45,7 +50,7 @@ const GetBody = ({ step, setStep, scrollRef }: BaseSteps) => {
   });
 
   const onSubmit = (data: FormData) => {
-    setStep(3);
+    setStep({ step: 2 });
     console.log("선택된 항목:", data.selected);
     postFullContents.mutate({
       reference: reference.reference,
@@ -60,13 +65,13 @@ const GetBody = ({ step, setStep, scrollRef }: BaseSteps) => {
   }, [postFullContents]);
 
   useEffect(() => {
-    if (step === 3) {
+    if (step.step === 2) {
       setFullContent(""); // ✅ 결과 초기화
     }
   }, [step]);
 
   return (
-    <Wrapper $isVisible={step >= 3}>
+    <Wrapper $isVisible={step.step >= 2}>
       <Flex vertical gap={30}>
         <Title level={5}>
           10개의 후보들 중에서 마음에 드는 첫 문장을 선택해주세요! 선택해주신 첫
