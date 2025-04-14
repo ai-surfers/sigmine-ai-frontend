@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Setting from "./Setting";
 import GetFirstSentence from "./GetFirstSentence";
-import SetContents from "./SetContents";
 import GetBody from "./GetBody";
 import { StepType } from "@/types/threads";
 import { Flex } from "antd";

@@ -12,6 +12,7 @@ import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { SettingType, StepType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
+import TextArea from "antd/es/input/TextArea";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
@@ -105,7 +106,11 @@ const Setting = ({
                 control={control}
                 render={({ field }) => (
                   <>
-                    <Input {...field} placeholder="입력 값을 입력해주세요." />
+                    <TextArea
+                      {...field}
+                      autoSize={{ minRows: 1, maxRows: 8 }}
+                      placeholder="입력 값을 입력해주세요."
+                    />
                     {errors.examples?.[index]?.content && (
                       <p style={{ color: "red" }}>
                         {errors.examples[index].content?.message}
