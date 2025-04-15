@@ -1,31 +1,24 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Input } from "antd";
+import { Button, Flex, Input, message, Spin } from "antd";
 import Title from "antd/es/typography/Title";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, Suspense, useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { usePostSettings } from "@/hooks/mutations/usePostSettings";
-import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
-import { SettingType, StepType } from "@/types/threads";
+
+import { SettingType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
+import TextArea from "antd/es/input/TextArea";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
   examples: z.array(z.object({ content: z.string().min(1, "필수") })),
 });
 
-const Setting = ({
-  setStep,
-}: {
-  setStep: Dispatch<SetStateAction<StepType>>;
-}) => {
-  const { userData } = useUser();
-  const router = useRouter();
-
+const Setting = () => {
   const {
     control,
     handleSubmit,
@@ -39,7 +32,7 @@ const Setting = ({
     },
   });
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: "examples",
     control,
   });
@@ -47,7 +40,7 @@ const Setting = ({
   const { mutate: postSettings } = usePostSettings({
     onSuccess(res) {
       console.log("Success", res);
-      setStep(2);
+      message.success("설정이 저장되었습니다.");
     },
     onError(e) {
       console.error("Failed", e);
@@ -56,22 +49,19 @@ const Setting = ({
 
   const onSubmit = (data: SettingType) => {
     console.log("폼 제출됨:", data);
-    postSettings({ settings: data, teamCode: userData.teamCode ?? "" });
+    postSettings({ settings: data });
   };
 
-  const { data } = useSettingsQuery(userData.teamCode ?? "");
+  const { data, isLoading } = useSettingsQuery();
 
-  useEffect(() => {
-    if (!userData?.teamCode) {
-      router.push("/"); // 유저 정보 없을 경우 루트로 이동
-    }
-  }, [userData]);
-
+  // 기존 세팅값이 있을 경우 form에 세팅
   useEffect(() => {
     if (data) {
       reset(data);
     }
   }, [data]);
+
+  if (isLoading) return <Spin />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,14 +94,19 @@ const Setting = ({
                 name={`examples.${index}.content`}
                 control={control}
                 render={({ field }) => (
-                  <>
-                    <Input {...field} placeholder="입력 값을 입력해주세요." />
+                  <Flex gap={10} style={{ width: "100%" }} align="center">
+                    <TextArea
+                      {...field}
+                      autoSize={{ minRows: 1, maxRows: 8 }}
+                      placeholder="입력 값을 입력해주세요."
+                    />
                     {errors.examples?.[index]?.content && (
                       <p style={{ color: "red" }}>
                         {errors.examples[index].content?.message}
                       </p>
                     )}
-                  </>
+                    <Button onClick={() => remove(index)}>삭제</Button>
+                  </Flex>
                 )}
               />
             </div>

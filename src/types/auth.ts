@@ -4,6 +4,5 @@ export interface LoginResponse {
 
 export type UserType = {
   isLogin: boolean;
-  teamCode: string | null;
   teamName: string | null;
 };

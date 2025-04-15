@@ -1,20 +1,15 @@
-import { FirstSentenceResponseType, ReferenceType } from "@/types/threads";
+import { ThreadsStateType } from "@/types/threads";
 import { atom } from "recoil";
 
-export const initialFirstSentenceState = {
+export const initialThreads = {
+  step: 1,
   first_sentence_candidates: [],
-};
-
-export const firstSentenceState = atom<FirstSentenceResponseType>({
-  key: "firstSentenceState",
-  default: initialFirstSentenceState,
-});
-
-export const initialReferenceState = {
+  selectedFirstSentence: "",
   reference: "",
+  fullContent: "",
 };
 
-export const referenceState = atom<ReferenceType>({
-  key: "referenceState",
-  default: initialReferenceState,
+export const threadsState = atom<ThreadsStateType>({
+  key: "threadsState",
+  default: initialThreads,
 });

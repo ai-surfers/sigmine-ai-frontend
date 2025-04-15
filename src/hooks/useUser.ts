@@ -2,7 +2,6 @@
 
 import { useRecoilState } from "recoil";
 import { initialUserState, userState } from "../states/userState";
-import { LoginResponse } from "@/types/auth";
 
 /**
  * useUser Hook
@@ -19,19 +18,12 @@ export const useUser = () => {
     }));
   };
 
-  const setUserTeamCode = (teamCode: string | null) => {
+  const setAccessToken = (token: string | null) => {
     setUserData((prevState) => ({
       ...prevState,
-      teamCode: teamCode,
+      accessToken: token,
     }));
   };
-
-  // const setAccessToken = (token: string | null) => {
-  //     setUserData((prevState) => ({
-  //         ...prevState,
-  //         accessToken: token,
-  //     }));
-  // };
 
   const resetUserState = () => {
     setUserData(initialUserState);
@@ -40,8 +32,7 @@ export const useUser = () => {
   return {
     userData,
     setUserTeamName,
-    setUserTeamCode,
-    // setAccessToken,
+    setAccessToken,
     resetUserState,
   };
 };

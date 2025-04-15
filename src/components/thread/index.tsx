@@ -1,20 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
-import Setting from "./Setting";
+import React, { useEffect, useRef } from "react";
 import GetFirstSentence from "./GetFirstSentence";
-import SetContents from "./SetContents";
 import GetBody from "./GetBody";
-import { StepType } from "@/types/threads";
 import { Flex } from "antd";
+import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 const Thread = () => {
-  const [step, setStep] = useState<StepType>(1);
+  const { userData } = useUser();
+  const router = useRouter();
+  const bodyRef = useRef<HTMLDivElement>(null); // 단계 이동시 스크롤할 때 사용할 ref
+
+  useEffect(() => {
+    if (!userData?.isLogin) {
+      router.push("/"); // 유저 정보 없을 경우 루트로 이동
+    }
+  }, [userData]);
+
   return (
-    <Flex vertical gap={30}>
-      <Setting setStep={setStep} />
-      <GetFirstSentence step={step} setStep={setStep} />
-      <GetBody step={step} setStep={setStep} />
+    <Flex
+      ref={bodyRef}
+      vertical
+      gap={30}
+      style={{
+        maxHeight: "100vh",
+        overflowY: "auto",
+        scrollBehavior: "smooth",
+      }}
+    >
+      <GetFirstSentence scrollRef={bodyRef} />
+      <GetBody scrollRef={bodyRef} />
     </Flex>
   );
 };

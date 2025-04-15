@@ -1,12 +1,11 @@
 import { BaseResponse } from "@/apis/client";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { RefObject } from "react";
 
-export type StepType = 1 | 2 | 3;
+export type StepType = 1 | 2;
 
-export interface BaseSteps {
-  step: StepType;
-  setStep: Dispatch<SetStateAction<StepType>>;
+export interface RefType {
+  scrollRef: RefObject<HTMLDivElement | null>;
 }
 
 export interface SettingType {
@@ -14,11 +13,7 @@ export interface SettingType {
   examples: { content: string }[];
 }
 
-interface WithTeamCode {
-  teamCode: string;
-}
-
-export interface SettingParmsType extends WithTeamCode {
+export interface SettingParmsType {
   settings: SettingType;
 }
 
@@ -30,7 +25,7 @@ export interface ReferenceType {
   reference: string;
 }
 
-export interface FirstSenteceParamsType extends WithTeamCode, ReferenceType {}
+export interface FirstSenteceParamsType extends ReferenceType {}
 
 export interface FirstSentenceResponseType {
   first_sentence_candidates: string[];
@@ -46,10 +41,15 @@ export interface FullContentBodyType {
   reference: string;
 }
 
-export interface FullContentParamsType
-  extends FullContentBodyType,
-    WithTeamCode {}
+export interface FullContentParamsType extends FullContentBodyType {}
 
 export interface FullContentResponseType {
   full_contents: string;
+}
+
+export interface ThreadsStateType extends FirstSentenceResponseType {
+  selectedFirstSentence: string;
+  step: number;
+  fullContent: string;
+  reference: string;
 }
