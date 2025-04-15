@@ -9,13 +9,13 @@ export async function login(teamCode: string) {
     },
   });
 
-  return res.data.data;
+  return res.data;
 }
 
-export const useLogin = (teamCode: string) => {
-  return useQuery<LoginResponse>({
-    queryKey: ["login", teamCode],
-    queryFn: () => login(teamCode),
-    enabled: !!teamCode,
-  });
-};
+// export const useLogin = (teamCode: string) => {
+//   return useQuery<LoginResponse>({
+//     queryKey: ["login", teamCode],
+//     queryFn: () => login(teamCode),
+//     enabled: !!teamCode,
+//   });
+// };

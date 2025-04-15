@@ -6,16 +6,10 @@ import {
 } from "@/types/threads";
 import { useMutation } from "@tanstack/react-query";
 
-async function postFirstSentence({
-  reference,
-  teamCode,
-}: FirstSenteceParamsType) {
+async function postFirstSentence({ reference }: FirstSenteceParamsType) {
   const { data } = await POST<FirstSentenceResponseType>(
     `/threads/first-sentence`,
-    { reference },
-    {
-      headers: { "team-code": teamCode },
-    }
+    { reference }
   );
   return data;
 }
@@ -25,8 +19,8 @@ export const usePostFirstSentence = ({
   onError,
 }: PostThreadsAsyncs<FirstSentenceResponseType>) => {
   return useMutation({
-    mutationFn: ({ reference, teamCode }: FirstSenteceParamsType) =>
-      postFirstSentence({ reference, teamCode }),
+    mutationFn: ({ reference }: FirstSenteceParamsType) =>
+      postFirstSentence({ reference }),
     onSuccess: onSuccess,
     onError: onError,
   });
