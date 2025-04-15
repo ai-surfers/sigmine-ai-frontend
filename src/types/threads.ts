@@ -1,6 +1,6 @@
 import { BaseResponse } from "@/apis/client";
 import { AxiosError } from "axios";
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { RefObject } from "react";
 
 export type StepType = 1 | 2;
 
@@ -11,10 +11,6 @@ export interface RefType {
 export interface SettingType {
   persona: string;
   examples: { content: string }[];
-}
-
-interface WithTeamCode {
-  teamCode: string;
 }
 
 export interface SettingParmsType {
@@ -49,4 +45,11 @@ export interface FullContentParamsType extends FullContentBodyType {}
 
 export interface FullContentResponseType {
   full_contents: string;
+}
+
+export interface ThreadsStateType extends FirstSentenceResponseType {
+  selectedFirstSentence: string;
+  step: number;
+  fullContent: string;
+  reference: string;
 }

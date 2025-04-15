@@ -5,16 +5,11 @@ import styled from "styled-components";
 import { z } from "zod";
 import { Button, Flex, Spin } from "antd";
 import { RefType } from "@/types/threads";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  firstSentenceState,
-  referenceState,
-  stepState,
-} from "@/states/threadState";
 import Title from "antd/es/typography/Title";
 import { usePostFullContents } from "@/hooks/mutations/usePostFullContents";
 import FinalResult from "./FinalResult";
 import { useScrollBottom } from "@/hooks/useScrollBottom";
+import { useThreads } from "@/hooks/useThreads";
 
 const schema = z.object({
   selected: z.string().min(1, "하나 이상 선택해주세요!"),
@@ -27,17 +22,14 @@ const GetBody = ({ scrollRef }: RefType) => {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { selected: "" },
   });
 
-  const firstSentences = useRecoilValue(firstSentenceState);
-  const reference = useRecoilValue(referenceState);
-  const [step, setStep] = useRecoilState(stepState);
-
-  const [fullContent, setFullContent] = useState("");
-  const scrollToBottom = useScrollBottom(scrollRef);
+  const { threadsData, setFullContent, setSelectedFirstSentence } =
+    useThreads();
 
   const postFullContents = usePostFullContents({
     onSuccess(res) {
@@ -50,32 +42,37 @@ const GetBody = ({ scrollRef }: RefType) => {
   });
 
   const onSubmit = (data: FormData) => {
-    setStep({ step: 2 });
+    setFullContent("");
     console.log("선택된 항목:", data.selected);
+    setSelectedFirstSentence(data.selected);
     postFullContents.mutate({
-      reference: reference.reference,
+      reference: threadsData.reference,
       first_sentence: data.selected,
     });
   };
 
+  // 버튼 클릭시 스크롤 아래로 이동
+  const scrollToBottom = useScrollBottom(scrollRef);
   useEffect(() => {
     if (postFullContents.isPending) {
       scrollToBottom();
     }
   }, [postFullContents]);
 
+  // 기존에 선택한 firstSentence가 있을 경우
+
   useEffect(() => {
-    if (step.step === 2) {
-      setFullContent(""); // ✅ 결과 초기화
+    if (threadsData.selectedFirstSentence) {
+      setValue("selected", threadsData.selectedFirstSentence);
     }
-  }, [step]);
+  }, [threadsData.selectedFirstSentence, setValue]);
 
   return (
-    <Wrapper $isVisible={step.step >= 2}>
+    <Wrapper $isVisible={threadsData.step >= 2}>
       <Flex vertical gap={30}>
         <Title level={5}>
           10개의 후보들 중에서 마음에 드는 첫 문장을 선택해주세요! 선택해주신 첫
-          문장을 바탕으로 스레드 내용을 만들어 드릴게요{" "}
+          문장을 바탕으로 스레드 내용을 만들어 드릴게요.
         </Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -83,25 +80,23 @@ const GetBody = ({ scrollRef }: RefType) => {
             control={control}
             render={({ field }) => (
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {firstSentences.first_sentence_candidates.map(
-                  (firstSentence) => (
-                    <Button
-                      key={firstSentence}
-                      onClick={() => field.onChange(firstSentence)}
-                      style={{
-                        padding: 10,
-                        border:
-                          field.value === firstSentence
-                            ? "2px solid blue"
-                            : "1px solid gray",
-                        background:
-                          field.value === firstSentence ? "#e0f0ff" : "#fff",
-                      }}
-                    >
-                      {firstSentence}
-                    </Button>
-                  )
-                )}
+                {threadsData.first_sentence_candidates.map((firstSentence) => (
+                  <Button
+                    key={firstSentence}
+                    onClick={() => field.onChange(firstSentence)}
+                    style={{
+                      padding: 10,
+                      border:
+                        field.value === firstSentence
+                          ? "2px solid blue"
+                          : "1px solid gray",
+                      background:
+                        field.value === firstSentence ? "#e0f0ff" : "#fff",
+                    }}
+                  >
+                    {firstSentence}
+                  </Button>
+                ))}
               </div>
             )}
           />
@@ -112,9 +107,9 @@ const GetBody = ({ scrollRef }: RefType) => {
           <Button htmlType="submit">스레드 내용 만들기</Button>
         </form>
         {postFullContents.isPending && <Spin />}
-        {!postFullContents.isPending && fullContent.length > 1 && (
+        {!postFullContents.isPending && threadsData.fullContent.length > 1 && (
           <FinalResult
-            initialResult={fullContent}
+            initialResult={threadsData.fullContent}
             scrollToBottom={scrollToBottom}
           />
         )}

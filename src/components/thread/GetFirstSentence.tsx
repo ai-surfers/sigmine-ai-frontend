@@ -8,14 +8,9 @@ import Title from "antd/es/typography/Title";
 import { Button, Flex, Input, Spin } from "antd";
 import { ReferenceType, RefType } from "@/types/threads";
 import { usePostFirstSentence } from "@/hooks/mutations/usePostFirstSentence";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  firstSentenceState,
-  referenceState,
-  stepState,
-} from "@/states/threadState";
 import { useEffect, useState } from "react";
 import { useScrollBottom } from "@/hooks/useScrollBottom";
+import { useThreads } from "@/hooks/useThreads";
 
 const schema = z.object({
   reference: z.string().min(1, "필수"),
@@ -26,6 +21,7 @@ const GetFirstSentence = ({ scrollRef }: RefType) => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ReferenceType>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -33,42 +29,54 @@ const GetFirstSentence = ({ scrollRef }: RefType) => {
     },
   });
 
-  const [tmpReference, setTmpReference] = useState({ reference: "" });
-  const setFirstSentence = useSetRecoilState(firstSentenceState);
-  const setReference = useSetRecoilState(referenceState);
-  const [step, setStep] = useRecoilState(stepState);
+  const [tmpReference, setTmpReference] = useState("");
+  const {
+    setThreadStep,
+    setReference,
+    setFirstCandidates,
+    threadsData,
+    setFullContent,
+  } = useThreads();
 
   const onSubmit = (data: ReferenceType) => {
-    setStep({ step: 1 });
+    setThreadStep(1);
+    setFullContent("");
     console.log("폼 제출됨:", data);
     postFirstSentence.mutate({
       ...data,
     });
-    setTmpReference(data);
+    setTmpReference(data.reference);
   };
 
   const postFirstSentence = usePostFirstSentence({
     onSuccess(res) {
       console.log("Success", res);
-      setFirstSentence(res.data);
+      setFirstCandidates(res.data.first_sentence_candidates);
       setReference(tmpReference);
-      setStep({ step: 2 });
+      setThreadStep(2);
     },
     onError(e) {
       console.error("Failed", e);
     },
   });
 
-  const scrollToBottom = useScrollBottom(scrollRef);
+  // 버튼 클릭시 스크롤 아래로 이동
 
+  const scrollToBottom = useScrollBottom(scrollRef);
   useEffect(() => {
     if (postFirstSentence.isPending) {
       scrollToBottom();
     }
   }, [postFirstSentence.isPending]);
 
+  // 기존에 입력한 refernece가 있을 경우
+
+  useEffect(() => {
+    reset({ reference: threadsData.reference });
+  }, [threadsData.reference]);
+
   return (
-    <Wrapper $isVisible={step.step >= 1}>
+    <Wrapper $isVisible={threadsData.step >= 1}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Title level={3}>스레드 첫 문장 만들기</Title>
         <Title level={4}>내용을 간단하게 입력해주세요</Title>

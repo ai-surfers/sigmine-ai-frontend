@@ -6,6 +6,7 @@ import GetBody from "./GetBody";
 import { Flex } from "antd";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 const Thread = () => {
   const { userData } = useUser();
