@@ -28,6 +28,7 @@ const Thread = () => {
         maxHeight: "100vh",
         overflowY: "auto",
         scrollBehavior: "smooth",
+        padding: "30px",
       }}
     >
       <GetFirstSentence scrollRef={bodyRef} />
