@@ -5,6 +5,9 @@ import { useUser } from "@/hooks/useUser";
 import { Button, Flex } from "antd";
 import LogoutButton from "./LogoutButton";
 import { usePathname, useRouter } from "next/navigation";
+import LoginButton from "./LoginButton";
+import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const { userData } = useUser();
@@ -15,20 +18,23 @@ const Header = () => {
 
   return (
     <Flex
-      justify="end"
+      justify="space-between"
       align="center"
       gap={30}
-      style={{ padding: "10px 20px" }}
+      style={{ padding: "8px 24px", height: "52px" }}
     >
-      {userData.teamName}
-      <Button
-        onClick={() =>
-          route.push(pathname.includes("setting") ? `/home` : `/setting`)
-        }
-      >
-        {pathname.includes("setting") ? "스레드 만들기" : "세팅하기"}
-      </Button>
-      <LogoutButton />
+      <Link href="/home">
+        <Image src="/imgs/logo-symbol.png" alt="logo" width={48} height={48} />
+      </Link>
+
+      {userData.isLogin ? (
+        <>
+          {userData.teamName}
+          <LogoutButton />
+        </>
+      ) : (
+        <LoginButton />
+      )}
     </Flex>
   );
 };

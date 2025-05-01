@@ -96,9 +96,9 @@ const Login = () => {
           </ErrorWrapper>
         )}
         <NotiWrapper>
-          <Icon name="SimpleCheck" color="G_400" />
+          <Icon name="SimpleCheck" color="G_400" size={6} />
           <Text font="c1_12_reg" color="G_400">
-            팀 관리자에게 코드를 요청하세요
+            팀코드가 없다면, 팀 관리자에게 코드를 요청하세요
           </Text>
         </NotiWrapper>
         <Button

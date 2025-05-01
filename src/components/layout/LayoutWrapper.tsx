@@ -1,5 +1,6 @@
 "use client";
 import styled from "styled-components";
+import Header from "../header";
 
 const Wrapper = styled.div`
   max-width: 1440px;
@@ -11,5 +12,10 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  return <Wrapper>{children}</Wrapper>;
+  return (
+    <Wrapper>
+      <Header />
+      {children}
+    </Wrapper>
+  );
 }
