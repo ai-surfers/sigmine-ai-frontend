@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Flex } from "antd";
+import { Flex, Spin } from "antd";
 import { login } from "@/hooks/queries/useLogin";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
@@ -10,19 +10,18 @@ import { LOCALSTORAGE_KEYS, setLocalStorage } from "@/utils/storageUtils";
 import { useAutoLogin } from "@/hooks/useAutoLogin";
 import Image from "next/image";
 import { Input, Text, Button, Icon } from "ai-surfers-design-system";
+import { useDeviceSize } from "@/providers/DeviceContext";
 
 const Login = () => {
+  const { isUnderTablet, isMobile } = useDeviceSize();
   const [teamCode, setTeamCode] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { setUserTeamName, userData } = useUser();
   const route = useRouter();
 
   const handleClickLoginButton = async () => {
-    if (!teamCode) {
-      alert("팀 코드를 입력해주세요.");
-      return;
-    }
-
+    setIsLoading(true);
     try {
       const { data } = await login(teamCode);
       if (data) {
@@ -34,6 +33,7 @@ const Login = () => {
         setIsError(true);
       }
     } catch (err) {
+      setIsLoading(false);
       console.error(err, "로그인 실패");
       setIsError(true);
     }
@@ -49,9 +49,10 @@ const Login = () => {
 
   return (
     <Flex
+      vertical={isUnderTablet ? true : false}
       align="center"
       justify="start"
-      gap={65}
+      gap={isUnderTablet ? 24 : 65}
       style={{
         padding: "24px 25px",
         maxHeight: "100vh",
@@ -59,13 +60,18 @@ const Login = () => {
       }}
     >
       <StyledImage
-        src="/imgs/login-background.png"
+        src={
+          isUnderTablet
+            ? "/imgs/login-background-mobile.png"
+            : "/imgs/login-background.png"
+        }
         alt="login"
-        width={838}
-        height={800}
+        width={isUnderTablet ? 371 : 838}
+        height={isUnderTablet ? 220 : 800}
         quality={100}
+        $isMobile={isMobile}
       />
-      <LoginWrapper>
+      <LoginWrapper $isUnderTablet={isUnderTablet}>
         <Text font="h1_24_semi" color="G_900" style={{ marginBottom: "47px" }}>
           시그마인에 오신 것을
           <br />
@@ -108,7 +114,7 @@ const Login = () => {
           style={{ justifyContent: "center" }}
           width="100%"
         >
-          로그인
+          {isLoading ? <CustomSpin /> : "로그인"}
         </Button>
       </LoginWrapper>
     </Flex>
@@ -117,19 +123,18 @@ const Login = () => {
 
 export default Login;
 
-const LoginWrapper = styled.div`
+const LoginWrapper = styled.div<{ $isUnderTablet: boolean }>`
   display: flex;
   max-width: 368px;
   height: 313px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: ${({ $isUnderTablet }) =>
+    $isUnderTablet ? "start" : "center"};
   align-items: start;
   flex: 1;
 `;
 
-const StyledImage = styled(Image)`
-  // max-height: calc(100vh - 48px);
-`;
+const StyledImage = styled(Image)<{ $isMobile: boolean }>``;
 
 const NotiWrapper = styled.div`
   ${({ theme }) => theme.mixins.flexBox("row", "start", "center")};
@@ -146,4 +151,10 @@ const ErrorWrapper = styled.div`
   ${({ theme }) => theme.mixins.flexBox("row", "start", "center")};
   gap: 4px;
   margin-top: 10px;
+`;
+
+const CustomSpin = styled(Spin)`
+  .ant-spin-dot-item {
+    background-color: ${({ theme }) => theme.colors.white} !important;
+  }
 `;

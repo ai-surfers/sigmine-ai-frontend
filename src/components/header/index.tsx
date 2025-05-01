@@ -2,9 +2,8 @@
 
 import { useAutoLogin } from "@/hooks/useAutoLogin";
 import { useUser } from "@/hooks/useUser";
-import { Button, Flex } from "antd";
+import { Flex } from "antd";
 import LogoutButton from "./LogoutButton";
-import { usePathname, useRouter } from "next/navigation";
 import LoginButton from "./LoginButton";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,9 +11,6 @@ import Link from "next/link";
 const Header = () => {
   const { userData } = useUser();
   useAutoLogin();
-
-  const route = useRouter();
-  const pathname = usePathname();
 
   return (
     <Flex
