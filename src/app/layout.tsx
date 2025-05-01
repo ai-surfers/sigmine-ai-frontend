@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import RecoilProvider from "../providers/RecoilProvider";
 import StyledComponentProvider from "../providers/StyledComponentProvider";
+
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
 import { headers } from "next/headers";
 import { DeviceProvider } from "@/providers/DeviceContext";
+
 
 export const metadata: Metadata = {
   title: "Sigmine AI",
@@ -36,5 +38,6 @@ export default function RootLayout({
         </body>
       </html>
     </DeviceProvider>
+
   );
 }
