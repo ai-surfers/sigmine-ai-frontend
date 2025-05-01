@@ -3,8 +3,8 @@
 import { ThemeProvider } from "styled-components";
 import { ConfigProvider } from "antd";
 import GlobalStyle from "@/app/globalStyle";
-// import theme from "./theme";
 import StyledComponentsRegistry from "./StyledComponentRegistry";
+import { theme } from "ai-surfers-design-system";
 
 interface StylesProps {
   children: React.ReactNode;
@@ -13,29 +13,29 @@ interface StylesProps {
 const Styles = ({ children }: StylesProps) => {
   return (
     <StyledComponentsRegistry>
-      {/* <ThemeProvider theme={theme}> */}
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#7580EA",
-            fontFamily: "Pretendard",
-          },
-          components: {
-            Typography: {
-              titleMarginBottom: "10px",
-              titleMarginTop: 0,
+      <ThemeProvider theme={theme}>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#7580EA",
+              fontFamily: "Pretendard",
             },
-            Select: {
-              optionSelectedColor: "#7580EA",
-              optionSelectedBg: "#F2F3FD",
+            components: {
+              Typography: {
+                titleMarginBottom: "10px",
+                titleMarginTop: 0,
+              },
+              Select: {
+                optionSelectedColor: "#7580EA",
+                optionSelectedBg: "#F2F3FD",
+              },
             },
-          },
-        }}
-      >
-        <GlobalStyle />
-        {children}
-      </ConfigProvider>
-      {/* </ThemeProvider> */}
+          }}
+        >
+          <GlobalStyle />
+          {children}
+        </ConfigProvider>
+      </ThemeProvider>
     </StyledComponentsRegistry>
   );
 };

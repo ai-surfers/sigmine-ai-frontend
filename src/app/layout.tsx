@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import RecoilProvider from "../providers/RecoilProvider";
 import StyledComponentProvider from "../providers/StyledComponentProvider";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,9 @@ export default function RootLayout({
       >
         <StyledComponentProvider>
           <ReactQueryProvider>
-            <RecoilProvider>{children}</RecoilProvider>
+            <RecoilProvider>
+              <LayoutWrapper>{children}</LayoutWrapper>
+            </RecoilProvider>
           </ReactQueryProvider>
         </StyledComponentProvider>
       </body>
