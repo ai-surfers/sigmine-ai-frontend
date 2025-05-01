@@ -14,12 +14,9 @@ import { Input, Text, Button, Icon } from "ai-surfers-design-system";
 
 const Login = () => {
   const [teamCode, setTeamCode] = useState("");
+  const [isError, setIsError] = useState(false);
   const { setUserTeamName, userData } = useUser();
   const route = useRouter();
-
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTeamCode(e.target.value);
-  };
 
   const handleClickLoginButton = async () => {
     if (!teamCode) {
@@ -34,9 +31,12 @@ const Login = () => {
         setLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE, teamCode);
         console.log(userData);
         route.push(`/home`);
+      } else {
+        setIsError(true);
       }
     } catch (err) {
       console.error(err, "로그인 실패");
+      setIsError(true);
     }
   };
 
@@ -71,15 +71,28 @@ const Login = () => {
         <Text font="b2_16_semi" color="G_700">
           팀 코드
         </Text>
-        <Flex style={{ height: "44px", width: "100%" }}>
+        <Flex
+          vertical
+          onClick={() => setIsError(false)}
+          style={{ height: "44px", width: "100%" }}
+        >
           <Input
             placeholder="팀 코드를 입력해주세요"
             onChange={setTeamCode}
             value={teamCode}
+            error={isError}
           ></Input>
         </Flex>
+        {isError && (
+          <ErrorWrapper>
+            <Icon name="InfoCircle" color="red" />
+            <Text font="c1_12_reg" color="red">
+              유효하지 않은 코드입니다. 다시 확인해주세요.
+            </Text>
+          </ErrorWrapper>
+        )}
         <NotiWrapper>
-          <Icon name="TickCircle" color="G_400" />
+          <Icon name="SimpleCheck" color="G_400" />
           <Text font="c1_12_reg" color="G_400">
             팀 관리자에게 코드를 요청하세요
           </Text>
@@ -123,4 +136,10 @@ const NotiWrapper = styled.div`
   margin-top: 12px;
   margin-bottom: 24px;
   width: 100%;
+`;
+
+const ErrorWrapper = styled.div`
+  ${({ theme }) => theme.mixins.flexBox("row", "start", "center")};
+  gap: 4px;
+  margin-top: 10px;
 `;
