@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex } from "antd";
-import Title from "antd/es/typography/Title";
 import { login } from "@/hooks/queries/useLogin";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
@@ -53,7 +52,11 @@ const Login = () => {
       align="center"
       justify="start"
       gap={65}
-      style={{ padding: "24px 25px", maxHeight: "100vh", height: "100vh" }}
+      style={{
+        padding: "24px 25px",
+        maxHeight: "100vh",
+        height: "calc(100vh - 52px)",
+      }}
     >
       <StyledImage
         src="/imgs/login-background.png"
@@ -81,6 +84,7 @@ const Login = () => {
             onChange={setTeamCode}
             value={teamCode}
             error={isError}
+            hierarchy="sigmine"
           ></Input>
         </Flex>
         {isError && (
@@ -99,7 +103,7 @@ const Login = () => {
         </NotiWrapper>
         <Button
           onClick={handleClickLoginButton}
-          hierarchy={teamCode.length > 0 ? "primary" : "disabled"}
+          hierarchy={teamCode.length > 0 ? "sigminePrimary" : "disabled"}
           size={52}
           style={{ justifyContent: "center" }}
           width="100%"
