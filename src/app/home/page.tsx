@@ -4,7 +4,6 @@ import Thread from "@/components/thread";
 export default function Home() {
   return (
     <>
-      <Header />
       <Thread />
     </>
   );

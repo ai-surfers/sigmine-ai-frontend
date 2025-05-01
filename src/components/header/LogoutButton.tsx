@@ -1,9 +1,8 @@
 import { useUser } from "@/hooks/useUser";
 import { LOCALSTORAGE_KEYS, removeLocalStorage } from "@/utils/storageUtils";
-import { Button } from "antd";
-import Title from "antd/es/typography/Title";
 import Link from "next/link";
 import React from "react";
+import { Button } from "ai-surfers-design-system";
 
 const LogoutButton = () => {
   const { resetUserState } = useUser();
@@ -15,7 +14,12 @@ const LogoutButton = () => {
 
   return (
     <Link href="/">
-      <Button style={{ justifyContent: "center" }} onClick={handleLogout}>
+      <Button
+        hierarchy="sigminePrimary"
+        size={44}
+        style={{ justifyContent: "center" }}
+        onClick={handleLogout}
+      >
         로그아웃
       </Button>
     </Link>
