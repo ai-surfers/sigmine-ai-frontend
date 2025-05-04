@@ -12,6 +12,7 @@ import { usePostSettings } from "@/hooks/mutations/usePostSettings";
 import { SettingType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
 import TextArea from "antd/es/input/TextArea";
+import StepIndicator, { SETTING_STEPS, StepIndicatorType } from "../ui/Step";
 
 const schema = z.object({
   persona: z.string().min(1, "필수"),
@@ -64,58 +65,61 @@ const Setting = () => {
   if (isLoading) return <Spin />;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex vertical gap={30}>
-        <div>
-          <Title level={3}>스레드 페르소나 설정하기</Title>
-          <Title level={4}>페르소나를 입력해주세요</Title>
-          <Controller
-            name="persona"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} placeholder="입력 값을 입력해주세요." />
-                {errors.persona && (
-                  <p style={{ color: "red" }}>{errors.persona.message}</p>
-                )}
-              </>
-            )}
-          />
-        </div>
-        <div>
-          <Title level={3}>스레드 예시 추가하기</Title>
-          <Title level={4}>학습시키고 싶은 문제를 입력하세요</Title>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              style={{ display: "flex", gap: "8px", marginBottom: "8px" }}
-            >
-              <Controller
-                name={`examples.${index}.content`}
-                control={control}
-                render={({ field }) => (
-                  <Flex gap={10} style={{ width: "100%" }} align="center">
-                    <TextArea
-                      {...field}
-                      autoSize={{ minRows: 1, maxRows: 8 }}
-                      placeholder="입력 값을 입력해주세요."
-                    />
-                    {errors.examples?.[index]?.content && (
-                      <p style={{ color: "red" }}>
-                        {errors.examples[index].content?.message}
-                      </p>
-                    )}
-                    <Button onClick={() => remove(index)}>삭제</Button>
-                  </Flex>
-                )}
-              />
-            </div>
-          ))}
-          <Button onClick={() => append({ content: "" })}>추가하기</Button>
-          <Button htmlType="submit">저장</Button>
-        </div>
-      </Flex>
-    </form>
+    <>
+      <StepIndicator steps={SETTING_STEPS} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Flex gap={60} style={{ width: "100%" }}>
+          <div>
+            <Title level={3}>스레드 페르소나 설정하기</Title>
+            <Title level={4}>페르소나를 입력해주세요</Title>
+            <Controller
+              name="persona"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input {...field} placeholder="입력 값을 입력해주세요." />
+                  {errors.persona && (
+                    <p style={{ color: "red" }}>{errors.persona.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
+          <div>
+            <Title level={3}>스레드 예시 추가하기</Title>
+            <Title level={4}>학습시키고 싶은 문제를 입력하세요</Title>
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                style={{ display: "flex", gap: "8px", marginBottom: "8px" }}
+              >
+                <Controller
+                  name={`examples.${index}.content`}
+                  control={control}
+                  render={({ field }) => (
+                    <Flex gap={10} style={{ width: "100%" }} align="center">
+                      <TextArea
+                        {...field}
+                        autoSize={{ minRows: 1, maxRows: 8 }}
+                        placeholder="입력 값을 입력해주세요."
+                      />
+                      {errors.examples?.[index]?.content && (
+                        <p style={{ color: "red" }}>
+                          {errors.examples[index].content?.message}
+                        </p>
+                      )}
+                      <Button onClick={() => remove(index)}>삭제</Button>
+                    </Flex>
+                  )}
+                />
+              </div>
+            ))}
+            <Button onClick={() => append({ content: "" })}>추가하기</Button>
+            <Button htmlType="submit">저장</Button>
+          </div>
+        </Flex>
+      </form>
+    </>
   );
 };
 
