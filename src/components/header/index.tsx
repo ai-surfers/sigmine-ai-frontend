@@ -7,6 +7,7 @@ import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
 import Image from "next/image";
 import Link from "next/link";
+import { Button, Text } from "ai-surfers-design-system";
 
 const Header = () => {
   const { userData } = useUser();
@@ -24,10 +25,14 @@ const Header = () => {
       </Link>
 
       {userData.isLogin ? (
-        <>
-          {userData.teamName}
+        <Flex gap={12} align="center">
+          <Button hierarchy="sigmineSecondary" size={36}>
+            <Text font="b3_14_reg" color="G_800">
+              {userData.teamName}
+            </Text>
+          </Button>
           <LogoutButton />
-        </>
+        </Flex>
       ) : (
         <LoginButton />
       )}

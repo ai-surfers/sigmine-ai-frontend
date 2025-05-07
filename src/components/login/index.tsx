@@ -28,7 +28,7 @@ const Login = () => {
         setUserTeamName(data.team_name);
         setLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE, teamCode);
         console.log(userData);
-        route.push(`/home`);
+        route.push(`/setting`);
       } else {
         setIsError(true);
       }
@@ -67,7 +67,7 @@ const Login = () => {
         }
         alt="login"
         width={isUnderTablet ? 371 : 838}
-        height={isUnderTablet ? 220 : 800}
+        height={isUnderTablet ? 220 : 732}
         quality={100}
         $isMobile={isMobile}
       />

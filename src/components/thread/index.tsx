@@ -7,6 +7,7 @@ import { Flex } from "antd";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
+import StepIndicator, { SETTING_STEPS } from "../ui/Step";
 
 const Thread = () => {
   const { userData } = useUser();
@@ -28,8 +29,10 @@ const Thread = () => {
         maxHeight: "100vh",
         overflowY: "auto",
         scrollBehavior: "smooth",
+        padding: "0 60px",
       }}
     >
+      <StepIndicator steps={SETTING_STEPS} />
       <GetFirstSentence scrollRef={bodyRef} />
       <GetBody scrollRef={bodyRef} />
     </Flex>
