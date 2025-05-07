@@ -78,7 +78,7 @@ const Circle = styled.div<{ $isActive: boolean }>`
   color: white;
   ${({ theme }) => theme.fonts.c1_12_med};
   display: flex;
-  align-items: center;
+  align-items: end;
   text-align: center;
   justify-content: center;
   margin-right: 6px;

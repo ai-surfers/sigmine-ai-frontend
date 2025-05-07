@@ -803,10 +803,10 @@ acorn@^8.14.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.1.tgz#721d5dc10f7d5b5609a891773d47731796935dfb"
   integrity sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==
 
-ai-surfers-design-system@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/ai-surfers-design-system/-/ai-surfers-design-system-0.1.11.tgz#d1cd82d26655e5843a42bb7d9c3927c3b7462a9f"
-  integrity sha512-6461dlseXIEaMNK16EPI9786XBZbK9ypuqh6EQEFcbf5deH9/uD5yeLiwd9Rgh9MnQyrNGK8CbUO9EdsAkYYAg==
+ai-surfers-design-system@^0.1.21:
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/ai-surfers-design-system/-/ai-surfers-design-system-0.1.21.tgz#418b76a9cf8a256392ff96f378e16d749c3a8300"
+  integrity sha512-BjC6mbmym4i1V0ctcneEpL8K4Pczbb+NSkfKv72QafUK3G+tdWQpBecnqpk+a6sIV54ZDsuRRiEr2IWwXI6O2Q==
   dependencies:
     iconsax-react "^0.0.8"
     react-markdown "^10.1.0"
