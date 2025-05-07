@@ -1,22 +1,29 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Input, message, Spin } from "antd";
-import Title from "antd/es/typography/Title";
-import React, { Dispatch, SetStateAction, Suspense, useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { z } from "zod";
+import { Flex, message, Spin } from "antd";
+import React, { useEffect } from "react";
+import { Control, FieldErrors, useForm } from "react-hook-form";
 import { usePostSettings } from "@/hooks/mutations/usePostSettings";
 
 import { SettingType } from "@/types/threads";
 import { useSettingsQuery } from "@/hooks/queries/useSettings";
-import TextArea from "antd/es/input/TextArea";
+import StepIndicator, { SETTING_STEPS } from "../ui/Step";
+import ProfileController from "./ProfileController";
+import ExampleController from "./ExampleController";
+import { z } from "zod";
+import { Button, Icon, Text } from "ai-surfers-design-system";
+import { useDeviceSize } from "@/providers/DeviceContext";
 
-const schema = z.object({
+export const SETTING_SCHEMA = z.object({
   persona: z.string().min(1, "필수"),
   examples: z.array(z.object({ content: z.string().min(1, "필수") })),
 });
+
+export interface ControllerProps {
+  control: Control<SettingType>;
+  errors: FieldErrors<SettingType>;
+}
 
 const Setting = () => {
   const {
@@ -25,17 +32,14 @@ const Setting = () => {
     reset,
     formState: { errors },
   } = useForm<SettingType>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(SETTING_SCHEMA),
     defaultValues: {
       persona: "",
       examples: [{ content: "" }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    name: "examples",
-    control,
-  });
+  const { isMobile } = useDeviceSize();
 
   const { mutate: postSettings } = usePostSettings({
     onSuccess(res) {
@@ -61,67 +65,49 @@ const Setting = () => {
     }
   }, [data]);
 
-  if (isLoading) return <Spin />;
+  if (isLoading)
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        style={{ height: "calc(100vh - 60px)" }}
+      >
+        <Spin />
+      </Flex>
+    );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex vertical gap={30}>
-        <div>
-          <Title level={3}>스레드 페르소나 설정하기</Title>
-          <Title level={4}>페르소나를 입력해주세요</Title>
-          <Controller
-            name="persona"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} placeholder="입력 값을 입력해주세요." />
-                {errors.persona && (
-                  <p style={{ color: "red" }}>{errors.persona.message}</p>
-                )}
-              </>
-            )}
-          />
-        </div>
-        <div>
-          <Title level={3}>스레드 예시 추가하기</Title>
-          <Title level={4}>학습시키고 싶은 문제를 입력하세요</Title>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              style={{ display: "flex", gap: "8px", marginBottom: "8px" }}
-            >
-              <Controller
-                name={`examples.${index}.content`}
-                control={control}
-                render={({ field }) => (
-                  <Flex gap={10} style={{ width: "100%" }} align="center">
-                    <TextArea
-                      {...field}
-                      autoSize={{ minRows: 1, maxRows: 8 }}
-                      placeholder="입력 값을 입력해주세요."
-                    />
-                    {errors.examples?.[index]?.content && (
-                      <p style={{ color: "red" }}>
-                        {errors.examples[index].content?.message}
-                      </p>
-                    )}
-                    <Button onClick={() => remove(index)}>삭제</Button>
-                  </Flex>
-                )}
-              />
-            </div>
-          ))}
-          <Button onClick={() => append({ content: "" })}>추가하기</Button>
-          <Button htmlType="submit">저장</Button>
-        </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ width: "100%", padding: isMobile ? "0 20px" : "0 60px" }}
+    >
+      <Flex
+        align="center"
+        justify="space-between"
+        wrap={isMobile ? "wrap" : "nowrap"}
+      >
+        <StepIndicator steps={SETTING_STEPS} />
+        <Button hierarchy="sigminePrimary" size={44}>
+          <Text color="white" font="b2_16_semi">
+            스레드 톤&성격 저장
+          </Text>
+          <Icon name="UserOctagon" variant="Bold" size={20} color="white" />
+        </Button>
+      </Flex>
+      <Flex
+        gap={60}
+        style={{
+          width: "100%",
+          marginTop: "24px",
+          height: "calc(100vh - 52px - 93px - 24px)",
+        }}
+        wrap={isMobile ? "wrap" : "nowrap"}
+      >
+        <ProfileController control={control} errors={errors} />
+        <ExampleController control={control} errors={errors} />
       </Flex>
     </form>
   );
 };
 
 export default Setting;
-
-const MessageWrapper = styled.div`
-  // display: flex;
-  // flex-direction: column;
-`;

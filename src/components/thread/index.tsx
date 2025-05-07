@@ -7,11 +7,14 @@ import { Flex } from "antd";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
+import StepIndicator, { SETTING_STEPS } from "../ui/Step";
+import { useDeviceSize } from "@/providers/DeviceContext";
 
 const Thread = () => {
   const { userData } = useUser();
   const router = useRouter();
   const bodyRef = useRef<HTMLDivElement>(null); // 단계 이동시 스크롤할 때 사용할 ref
+  const { isMobile } = useDeviceSize();
 
   useEffect(() => {
     if (!userData?.isLogin) {
@@ -28,8 +31,10 @@ const Thread = () => {
         maxHeight: "100vh",
         overflowY: "auto",
         scrollBehavior: "smooth",
+        padding: isMobile ? "0 20px" : "0 60px",
       }}
     >
+      <StepIndicator steps={SETTING_STEPS} />
       <GetFirstSentence scrollRef={bodyRef} />
       <GetBody scrollRef={bodyRef} />
     </Flex>
