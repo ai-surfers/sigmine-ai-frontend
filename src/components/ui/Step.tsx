@@ -63,8 +63,7 @@ const StepWrapper = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.colors.G_100};
   border-radius: 8px;
-  width: 100%;
-  max-width: 392px;
+  width: fit-content;
   padding: 4px;
   margin-top: 24px;
   margin-bottom: 24px;
@@ -81,8 +80,7 @@ const StepItem = styled.div<{ $isActive: boolean }>`
   transition: all 0.2s;
   gap: 8px;
   cursor: pointer;
-  width: 80%;
-  max-width: 210px;
+  width: fit-content;
 `;
 
 const Circle = styled.div<{ $isActive: boolean }>`
