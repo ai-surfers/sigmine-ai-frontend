@@ -95,14 +95,14 @@ const Login = () => {
         </Flex>
         {isError && (
           <ErrorWrapper>
-            <Icon name="InfoCircle" color="red" />
+            <Icon name="InfoCircle" color="red" variant="Linear" />
             <Text font="c1_12_reg" color="red">
               유효하지 않은 코드입니다. 다시 확인해주세요.
             </Text>
           </ErrorWrapper>
         )}
         <NotiWrapper>
-          <Icon name="SimpleCheck" color="G_400" size={6} />
+          <Icon name="SimpleCheck" color="G_400" size={6} variant="Linear" />
           <Text font="c1_12_reg" color="G_400">
             팀코드가 없다면, 팀 관리자에게 코드를 요청하세요
           </Text>

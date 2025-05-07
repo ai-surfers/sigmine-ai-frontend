@@ -65,7 +65,16 @@ const Setting = () => {
     }
   }, [data]);
 
-  if (isLoading) return <Spin />;
+  if (isLoading)
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        style={{ height: "calc(100vh - 60px)" }}
+      >
+        <Spin />
+      </Flex>
+    );
 
   return (
     <form
