@@ -29,6 +29,7 @@ const Thread = () => {
         maxHeight: "100vh",
         overflowY: "auto",
         scrollBehavior: "smooth",
+        padding: "0 60px",
       }}
     >
       <StepIndicator steps={SETTING_STEPS} />

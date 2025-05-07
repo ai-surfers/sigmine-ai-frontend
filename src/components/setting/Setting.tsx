@@ -13,6 +13,7 @@ import ProfileController from "./ProfileController";
 import ExampleController from "./ExampleController";
 import { z } from "zod";
 import { Button, Icon, Text } from "ai-surfers-design-system";
+import { useDeviceSize } from "@/providers/DeviceContext";
 
 export const SETTING_SCHEMA = z.object({
   persona: z.string().min(1, "필수"),
@@ -37,6 +38,8 @@ const Setting = () => {
       examples: [{ content: "" }],
     },
   });
+
+  const { isMobile } = useDeviceSize();
 
   const { mutate: postSettings } = usePostSettings({
     onSuccess(res) {
@@ -67,9 +70,13 @@ const Setting = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      style={{ width: "100%", padding: "0 60px" }}
+      style={{ width: "100%", padding: isMobile ? "0 20px" : "0 60px" }}
     >
-      <Flex align="center" justify="space-between">
+      <Flex
+        align="center"
+        justify="space-between"
+        wrap={isMobile ? "wrap" : "nowrap"}
+      >
         <StepIndicator steps={SETTING_STEPS} />
         <Button hierarchy="sigminePrimary" size={44}>
           <Text color="white" font="b2_16_semi">
@@ -85,6 +92,7 @@ const Setting = () => {
           marginTop: "24px",
           height: "calc(100vh - 52px - 93px - 24px)",
         }}
+        wrap={isMobile ? "wrap" : "nowrap"}
       >
         <ProfileController control={control} errors={errors} />
         <ExampleController control={control} errors={errors} />

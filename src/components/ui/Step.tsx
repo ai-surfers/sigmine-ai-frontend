@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { useRouter, usePathname } from "next/navigation";
 import { Text } from "ai-surfers-design-system";
+import { useDeviceSize } from "@/providers/DeviceContext";
 
 export type StepIndicatorType = {
   label: string;
@@ -24,6 +25,8 @@ const StepIndicator = ({ steps }: StepIndicatorProps) => {
 
   const current = steps.findIndex((step) => pathname === step.path);
 
+  const { isMobile } = useDeviceSize();
+
   return (
     <StepWrapper>
       {steps.map((step, index) => (
@@ -34,8 +37,17 @@ const StepIndicator = ({ steps }: StepIndicatorProps) => {
         >
           <Circle $isActive={index === current}>{index + 1}</Circle>
           <Text
-            font={index === current ? "b3_14_semi" : "b3_14_med"}
+            font={
+              isMobile
+                ? index === current
+                  ? "c1_12_semi"
+                  : "c1_12_med"
+                : index === current
+                ? "b3_14_semi"
+                : "b3_14_med"
+            }
             color={index === current ? "G_600" : "G_300"}
+            style={{ whiteSpace: "nowrap" }}
           >
             {step.label}
           </Text>
@@ -51,10 +63,12 @@ const StepWrapper = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.colors.G_100};
   border-radius: 8px;
-  width: fit-content;
+  width: 100%;
+  max-width: 392px;
   padding: 4px;
   margin-top: 24px;
   margin-bottom: 24px;
+  height: 45px;
 `;
 
 const StepItem = styled.div<{ $isActive: boolean }>`
@@ -67,6 +81,8 @@ const StepItem = styled.div<{ $isActive: boolean }>`
   transition: all 0.2s;
   gap: 8px;
   cursor: pointer;
+  width: 80%;
+  max-width: 210px;
 `;
 
 const Circle = styled.div<{ $isActive: boolean }>`

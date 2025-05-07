@@ -17,19 +17,23 @@ const ExampleController = ({ control, errors }: ControllerProps) => {
     name: "examples",
     control,
   });
-  const { isUnderTablet } = useDeviceSize();
+  const { isUnderTablet, isMobile } = useDeviceSize();
   return (
     <Flex
       vertical
       style={{
         width: "100%",
         overflowY: "scroll",
-        paddingRight: "20px",
+        paddingRight: isMobile ? "0" : "20px",
         boxSizing: "border-box",
       }}
     >
       <Flex align="center" gap={8}>
-        <Text font="b1_18_semi" color="G_700" style={{ marginRight: "8px" }}>
+        <Text
+          font="b1_18_semi"
+          color="G_700"
+          style={{ marginRight: isMobile ? "0" : "8px" }}
+        >
           학습할 스레드 추가하기
         </Text>
         <Text font="c1_12_reg" color="G_400">
