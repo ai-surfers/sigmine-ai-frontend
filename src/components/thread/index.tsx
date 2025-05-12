@@ -18,7 +18,7 @@ const Thread = () => {
 
   useEffect(() => {
     if (!userData?.isLogin) {
-      router.push("/"); // 유저 정보 없을 경우 루트로 이동
+      router.push("/login"); // 유저 정보 없을 경우 로그인 페이지로 이동
     }
   }, [userData]);
 

@@ -43,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userData.isLogin) {
-      route.push(`/home`);
+      route.push(`/`);
     }
   }, [userData]);
 
@@ -70,6 +70,7 @@ const Login = () => {
         height={isUnderTablet ? 220 : 732}
         quality={100}
         $isMobile={isMobile}
+        priority
       />
       <LoginWrapper $isUnderTablet={isUnderTablet}>
         <Text font="h1_24_semi" color="G_900" style={{ marginBottom: "47px" }}>
