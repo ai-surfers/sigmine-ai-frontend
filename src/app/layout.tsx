@@ -5,16 +5,20 @@ import StyledComponentProvider from "../providers/StyledComponentProvider";
 
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { DeviceProvider } from "@/providers/DeviceContext";
-
+import { getCookie } from "@/utils/cookieUtils";
+import { serverLogin, serverUserState } from "@/apis/auth/serverLogin";
+import { UserType } from "@/types/auth";
+import { redirect } from "next/navigation";
+import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
 
 export const metadata: Metadata = {
   title: "Sigmine AI",
   description: "Work smarter, with your AI employees.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,6 +26,11 @@ export default function RootLayout({
   const { isMobile, isUnderTablet } = detectDevice(
     headers().get("user-agent") || ""
   );
+
+  const teamCode = getCookie(COOKIE_KEYS.TEAM_CODE);
+  const user = teamCode ? await serverUserState(teamCode) : null;
+  console.log(user, teamCode);
+
   return (
     <DeviceProvider isUnderTablet={isUnderTablet} isMobile={isMobile}>
       <html lang="en">
@@ -30,7 +39,7 @@ export default function RootLayout({
         >
           <StyledComponentProvider>
             <ReactQueryProvider>
-              <RecoilProvider>
+              <RecoilProvider user={user}>
                 <LayoutWrapper>{children}</LayoutWrapper>
               </RecoilProvider>
             </ReactQueryProvider>
@@ -38,6 +47,5 @@ export default function RootLayout({
         </body>
       </html>
     </DeviceProvider>
-
   );
 }

@@ -11,7 +11,6 @@ import { Button, Text } from "ai-surfers-design-system";
 
 const Header = () => {
   const { userData } = useUser();
-  useAutoLogin();
 
   return (
     <Flex

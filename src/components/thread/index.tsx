@@ -1,26 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import GetFirstSentence from "./GetFirstSentence";
 import GetBody from "./GetBody";
 import { Flex } from "antd";
-import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
-import { useRecoilValue } from "recoil";
 import StepIndicator, { SETTING_STEPS } from "../ui/Step";
 import { useDeviceSize } from "@/providers/DeviceContext";
 
 const Thread = () => {
-  const { userData } = useUser();
-  const router = useRouter();
   const bodyRef = useRef<HTMLDivElement>(null); // 단계 이동시 스크롤할 때 사용할 ref
   const { isMobile } = useDeviceSize();
-
-  useEffect(() => {
-    if (!userData?.isLogin) {
-      router.push("/login"); // 유저 정보 없을 경우 로그인 페이지로 이동
-    }
-  }, [userData]);
 
   return (
     <Flex
