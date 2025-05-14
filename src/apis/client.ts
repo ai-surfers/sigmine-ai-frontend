@@ -1,4 +1,4 @@
-import { getLocalStorage, LOCALSTORAGE_KEYS } from "@/utils/storageUtils";
+import { COOKIE_KEYS, getClientCookie } from "@/utils/clientCookieUtils";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -15,7 +15,7 @@ export const API = axios.create({
  */
 API.interceptors.request.use(
   async (config) => {
-    const teamCode = getLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE);
+    const teamCode = getClientCookie(COOKIE_KEYS.TEAM_CODE);
 
     console.log(teamCode);
 

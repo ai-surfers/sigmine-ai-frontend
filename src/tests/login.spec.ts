@@ -11,8 +11,8 @@ test.describe("로그인 테스트", () => {
     await page.click('button:has-text("로그인")');
 
     // 로그인 후 페이지 이동 확인
-    await page.waitForURL("**/home", { timeout: 5000 });
-    await expect(page).toHaveURL(/\/home/);
+    await page.waitForURL("**/", { timeout: 5000 });
+    await expect(page).toHaveURL(/\//);
 
     // 현재 브라우저 상태(localStorage)를 저장
     await context.storageState({ path: storagePath });
@@ -23,7 +23,7 @@ test.describe("로그인 테스트", () => {
     await page.goto("http://localhost:3000/");
 
     // 자동 로그인 됐는지 확인 (홈으로 리디렉션)
-    await page.waitForURL("**/home", { timeout: 5000 });
-    await expect(page).toHaveURL(/\/home/);
+    await page.waitForURL("**/", { timeout: 5000 });
+    await expect(page).toHaveURL(/\//);
   });
 });

@@ -11,7 +11,6 @@ import { Button, Text } from "ai-surfers-design-system";
 
 const Header = () => {
   const { userData } = useUser();
-  useAutoLogin();
 
   return (
     <Flex
@@ -20,7 +19,7 @@ const Header = () => {
       gap={30}
       style={{ padding: "8px 24px", height: "52px" }}
     >
-      <Link href="/home">
+      <Link href="/">
         <Image src="/imgs/logo-symbol.png" alt="logo" width={48} height={48} />
       </Link>
 
