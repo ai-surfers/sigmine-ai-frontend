@@ -3,14 +3,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Flex, Spin } from "antd";
-import { login } from "@/hooks/queries/useLogin";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
-import { LOCALSTORAGE_KEYS, setLocalStorage } from "@/utils/storageUtils";
-import { useAutoLogin } from "@/hooks/useAutoLogin";
 import Image from "next/image";
 import { Input, Text, Button, Icon } from "ai-surfers-design-system";
 import { useDeviceSize } from "@/providers/DeviceContext";
+import { routedLogin } from "@/apis/auth/clientAuth";
 
 const Login = () => {
   const { isUnderTablet, isMobile } = useDeviceSize();
@@ -23,10 +21,10 @@ const Login = () => {
   const handleClickLoginButton = async () => {
     setIsLoading(true);
     try {
-      const { data } = await login(teamCode);
-      if (data) {
-        setUserTeamName(data.team_name);
-        setLocalStorage(LOCALSTORAGE_KEYS.TEAM_CODE, teamCode);
+      const { teamName } = await routedLogin(teamCode);
+      console.log(teamName);
+      if (teamName) {
+        setUserTeamName(teamName);
         console.log(userData);
         route.push(`/setting`);
       } else {
@@ -38,14 +36,6 @@ const Login = () => {
       setIsError(true);
     }
   };
-
-  useAutoLogin();
-
-  useEffect(() => {
-    if (userData.isLogin) {
-      route.push(`/home`);
-    }
-  }, [userData]);
 
   return (
     <Flex
@@ -70,6 +60,7 @@ const Login = () => {
         height={isUnderTablet ? 220 : 732}
         quality={100}
         $isMobile={isMobile}
+        priority
       />
       <LoginWrapper $isUnderTablet={isUnderTablet}>
         <Text font="h1_24_semi" color="G_900" style={{ marginBottom: "47px" }}>

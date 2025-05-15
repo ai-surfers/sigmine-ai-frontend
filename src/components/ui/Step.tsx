@@ -16,7 +16,7 @@ type StepIndicatorProps = {
 
 export const SETTING_STEPS: StepIndicatorType[] = [
   { label: "스레드 톤&성격 설정", path: "/setting" },
-  { label: "첫 문장 선택 및 콘텐츠 생성", path: "/home" },
+  { label: "첫 문장 선택 및 콘텐츠 생성", path: "/" },
 ];
 
 const StepIndicator = ({ steps }: StepIndicatorProps) => {

@@ -4,6 +4,7 @@ import { atom } from "recoil";
 export const initialUserState = {
   isLogin: false,
   teamName: null,
+  teamCode: null,
 };
 
 export const userState = atom<UserType>({
