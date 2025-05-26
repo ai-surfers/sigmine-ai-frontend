@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       }
     );
 
-    res.cookies.set(COOKIE_KEYS.TEAM_CODE, loginRes.data.team_name, {
+    res.cookies.set(COOKIE_KEYS.TEAM_CODE, teamCode, {
       httpOnly: false,
       secure: process.env.APP_ENV !== "local",
       sameSite: process.env.APP_ENV === "local" ? "lax" : "none",
