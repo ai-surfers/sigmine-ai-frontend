@@ -8,16 +8,22 @@ import Image from "next/image";
 import { Text, Button } from "ai-surfers-design-system";
 import { useDeviceSize } from "@/providers/DeviceContext";
 import { useGoogleLogin } from "@/hooks/useGoogleLogin";
+import { useUser } from "@/hooks/useUser";
+import { getMe } from "@/apis/auth/getMe";
 
 const Login = () => {
   const { isUnderTablet, isMobile } = useDeviceSize();
   const route = useRouter();
   const { loginWithGoogle, isLoading } = useGoogleLogin();
+  const { setUser } = useUser();
 
   const handleClickLoginButton = async () => {
     const isLoginSuccess = await loginWithGoogle();
-    console.log(isLoginSuccess);
+
     if (isLoginSuccess) {
+      const user = await getMe();
+
+      if (user) setUser(user);
       route.push("/");
     }
   };

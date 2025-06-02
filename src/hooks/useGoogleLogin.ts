@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, PROVIDER } from "@/apis/firebase";
-import { login } from "@/apis/auth/clientAuth";
-import { useUser } from "./useUser";
+import { login } from "@/apis/auth/clientlogin";
 
 export const useGoogleLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUserName, userData } = useUser();
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
@@ -33,9 +31,6 @@ export const useGoogleLogin = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accessToken }),
       });
-
-      // 유저 정보 상태에 저장
-      setUserName(user.displayName ?? user.email ?? "");
 
       return true;
     } catch (err: any) {
