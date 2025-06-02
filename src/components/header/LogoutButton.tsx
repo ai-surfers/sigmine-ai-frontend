@@ -2,7 +2,7 @@ import { useUser } from "@/hooks/useUser";
 import React from "react";
 import { Button, Text } from "ai-surfers-design-system";
 import { useRouter } from "next/navigation";
-import { routedLogout } from "@/apis/auth/clientAuth";
+import { routedLogout } from "@/apis/auth/clientLogin";
 
 const LogoutButton = () => {
   const { resetUserState } = useUser();

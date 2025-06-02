@@ -1,39 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Flex, Spin } from "antd";
-import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Input, Text, Button, Icon } from "ai-surfers-design-system";
+import { Text, Button } from "ai-surfers-design-system";
 import { useDeviceSize } from "@/providers/DeviceContext";
-import { routedLogin } from "@/apis/auth/clientAuth";
+import { useGoogleLogin } from "@/hooks/useGoogleLogin";
+import { useUser } from "@/hooks/useUser";
+import { getMe } from "@/apis/auth/getMe";
 
 const Login = () => {
   const { isUnderTablet, isMobile } = useDeviceSize();
-  const [teamCode, setTeamCode] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { setUserTeamName, userData } = useUser();
   const route = useRouter();
+  const { loginWithGoogle, isLoading } = useGoogleLogin();
+  const { setUser } = useUser();
 
   const handleClickLoginButton = async () => {
-    setIsLoading(true);
-    try {
-      const { teamName } = await routedLogin(teamCode);
-      console.log(teamName);
-      if (teamName) {
-        setUserTeamName(teamName);
-        console.log(userData);
-        route.push(`/setting`);
-      } else {
-        setIsError(true);
-      }
-    } catch (err) {
-      setIsLoading(false);
-      console.error(err, "로그인 실패");
-      setIsError(true);
+    const isLoginSuccess = await loginWithGoogle();
+
+    if (isLoginSuccess) {
+      const user = await getMe();
+
+      if (user) setUser(user);
+      route.push("/");
     }
   };
 
@@ -68,7 +59,7 @@ const Login = () => {
           <br />
           환영해요! 👋
         </Text>
-        <Text font="b2_16_semi" color="G_700">
+        {/* <Text font="b2_16_semi" color="G_700">
           팀 코드
         </Text>
         <Flex
@@ -97,15 +88,15 @@ const Login = () => {
           <Text font="c1_12_reg" color="G_400">
             팀코드가 없다면, 팀 관리자에게 코드를 요청하세요
           </Text>
-        </NotiWrapper>
+        </NotiWrapper> */}
         <Button
           onClick={handleClickLoginButton}
-          hierarchy={teamCode.length > 0 ? "sigminePrimary" : "disabled"}
+          hierarchy="sigminePrimary"
           size={52}
           style={{ justifyContent: "center" }}
           width="100%"
         >
-          {isLoading ? <CustomSpin /> : "로그인"}
+          {isLoading ? <CustomSpin /> : "GOOGLE로 로그인"}
         </Button>
       </LoginWrapper>
     </Flex>

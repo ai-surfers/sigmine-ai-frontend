@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { serverLogin } from "../../../apis/auth/serverLogin";
 import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
 
-export async function GET(req: NextRequest) {
-  const teamCode = req.nextUrl.searchParams.get("teamCode");
+export async function POST(req: NextRequest) {
+  const { accessToken } = await req.json();
 
-  if (!teamCode) {
+  if (!accessToken) {
     return NextResponse.json(
-      { success: false, message: "teamCode 누락" },
+      { success: false, message: "토큰 필요" },
       { status: 400 }
     );
   }
 
   try {
-    const loginRes = await serverLogin(teamCode);
-
     const res = new NextResponse(
       JSON.stringify({
         success: true,
-        teamName: loginRes.data.team_name,
       }),
       {
         status: 200,
@@ -28,7 +24,7 @@ export async function GET(req: NextRequest) {
       }
     );
 
-    res.cookies.set(COOKIE_KEYS.TEAM_CODE, teamCode, {
+    res.cookies.set(COOKIE_KEYS.ACCESS_TOKEN, accessToken, {
       httpOnly: false,
       secure: process.env.APP_ENV !== "local",
       sameSite: process.env.APP_ENV === "local" ? "lax" : "none",

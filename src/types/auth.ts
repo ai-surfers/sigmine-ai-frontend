@@ -1,8 +1,15 @@
 export interface LoginResponse {
-  team_name: string;
+  access_token: string;
 }
 
-export type UserType = {
+export interface MeResponse {
+  nickname: string;
+  email: string;
+  picture: string;
+  email_verified: boolean;
+  joined_at: string;
+}
+
+export interface UserType extends MeResponse {
   isLogin: boolean;
-  teamName: string | null;
-};
+}
