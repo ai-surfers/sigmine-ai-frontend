@@ -5,12 +5,10 @@ import StyledComponentProvider from "../providers/StyledComponentProvider";
 
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { DeviceProvider } from "@/providers/DeviceContext";
 import { getCookie } from "@/utils/cookieUtils";
-import { serverLogin, serverUserState } from "@/apis/auth/serverLogin";
-import { UserType } from "@/types/auth";
-import { redirect } from "next/navigation";
+import { serverUserState } from "@/apis/auth/serverLogin";
 import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
 
 export const metadata: Metadata = {
@@ -27,9 +25,9 @@ export default async function RootLayout({
     headers().get("user-agent") || ""
   );
 
-  const teamCode = getCookie(COOKIE_KEYS.TEAM_CODE);
-  const user = teamCode ? await serverUserState(teamCode) : null;
-  console.log(user, teamCode);
+  const accessToken = getCookie(COOKIE_KEYS.ACCESS_TOKEN);
+  const user = accessToken ? await serverUserState(accessToken) : null;
+  console.log(user, accessToken);
 
   return (
     <DeviceProvider isUnderTablet={isUnderTablet} isMobile={isMobile}>

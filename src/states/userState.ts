@@ -3,7 +3,11 @@ import { atom } from "recoil";
 
 export const initialUserState = {
   isLogin: false,
-  name: null,
+  nickname: "",
+  email: "",
+  picture: "",
+  email_verified: false,
+  joined_at: "",
 };
 
 export const userState = atom<UserType>({

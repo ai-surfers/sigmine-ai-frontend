@@ -4,7 +4,7 @@ import { getCookie } from "@/utils/cookieUtils";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  if (!!getCookie(COOKIE_KEYS.TEAM_CODE)) redirect("/");
+  if (!!getCookie(COOKIE_KEYS.ACCESS_TOKEN)) redirect("/");
 
   return (
     <>

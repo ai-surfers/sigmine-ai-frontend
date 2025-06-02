@@ -27,7 +27,7 @@ const Header = () => {
         <Flex gap={12} align="center">
           <Button hierarchy="sigmineSecondary" size={36}>
             <Text font="b3_14_reg" color="G_800">
-              {userData.teamName}
+              {userData.email}
             </Text>
           </Button>
           <LogoutButton />
