@@ -1,5 +1,15 @@
 "use client";
 
+import { LoginResponse } from "@/types/auth";
+import { POST } from "../client";
+
+export async function login(token: string) {
+  return await POST<LoginResponse>(`/identities/tokens/google`, {
+    access_token: token,
+  });
+}
+
+// team code로 로그인시, 구글 로그인 도입으로 deprecated
 export async function routedLogin(
   teamCode: string
 ): Promise<{ teamName: string }> {

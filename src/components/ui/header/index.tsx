@@ -23,17 +23,15 @@ const Header = () => {
         <Image src="/imgs/logo-symbol.png" alt="logo" width={48} height={48} />
       </Link>
 
-      {userData.isLogin ? (
+      {userData.isLogin && (
         <Flex gap={12} align="center">
           <Button hierarchy="sigmineSecondary" size={36}>
             <Text font="b3_14_reg" color="G_800">
-              {userData.teamName}
+              {userData.email}
             </Text>
           </Button>
           <LogoutButton />
         </Flex>
-      ) : (
-        <LoginButton />
       )}
     </Flex>
   );

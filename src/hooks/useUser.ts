@@ -2,6 +2,7 @@
 
 import { useRecoilState } from "recoil";
 import { initialUserState, userState } from "../states/userState";
+import { MeResponse } from "@/types/auth";
 
 /**
  * useUser Hook
@@ -10,11 +11,15 @@ import { initialUserState, userState } from "../states/userState";
 export const useUser = () => {
   const [userData, setUserData] = useRecoilState(userState);
 
-  const setUserTeamName = (teamName: string) => {
+  const setUser = (newState: MeResponse) => {
     setUserData((prevState) => ({
       ...prevState,
       isLogin: true,
-      teamName: teamName,
+      name: newState.nickname,
+      email: newState.email,
+      email_verified: newState.email_verified,
+      joined_at: newState.joined_at,
+      picture: newState.picture,
     }));
   };
 
@@ -31,7 +36,7 @@ export const useUser = () => {
 
   return {
     userData,
-    setUserTeamName,
+    setUser,
     setAccessToken,
     resetUserState,
   };

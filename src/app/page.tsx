@@ -3,8 +3,8 @@ import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
 import { getCookie } from "@/utils/cookieUtils";
 import { redirect } from "next/navigation";
 
-export default function RootPage() {
-  if (!getCookie(COOKIE_KEYS.TEAM_CODE)) redirect("/login");
+export default function Root() {
+  if (!getCookie(COOKIE_KEYS.ACCESS_TOKEN)) redirect("/login");
 
   return (
     <div>
