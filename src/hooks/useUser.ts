@@ -10,11 +10,11 @@ import { initialUserState, userState } from "../states/userState";
 export const useUser = () => {
   const [userData, setUserData] = useRecoilState(userState);
 
-  const setUserTeamName = (teamName: string) => {
+  const setUserName = (name: string) => {
     setUserData((prevState) => ({
       ...prevState,
       isLogin: true,
-      teamName: teamName,
+      name: name,
     }));
   };
 
@@ -31,7 +31,7 @@ export const useUser = () => {
 
   return {
     userData,
-    setUserTeamName,
+    setUserName,
     setAccessToken,
     resetUserState,
   };

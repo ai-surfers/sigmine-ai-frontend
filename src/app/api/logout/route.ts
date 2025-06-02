@@ -3,7 +3,7 @@ import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
 
 export async function POST() {
   const res = new NextResponse(null, { status: 200 });
-  res.cookies.set(COOKIE_KEYS.TEAM_CODE, "", {
+  res.cookies.set(COOKIE_KEYS.ACCESS_TOKEN, "", {
     path: "/",
     maxAge: 0,
   });

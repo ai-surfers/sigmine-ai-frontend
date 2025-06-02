@@ -15,17 +15,11 @@ export const API = axios.create({
  */
 API.interceptors.request.use(
   async (config) => {
-    const teamCode = getClientCookie(COOKIE_KEYS.TEAM_CODE);
+    const accessToken = getClientCookie(COOKIE_KEYS.ACCESS_TOKEN);
 
-    console.log(teamCode);
-
-    if (teamCode) {
-      config.headers["team-code"] = `${teamCode}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
-    // if (accessToken) {
-    //   config.headers.Authorization = `Bearer ${accessToken}`;
-    // }
 
     config.headers["source-location"] = "web";
 

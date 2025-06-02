@@ -1,8 +1,8 @@
 export interface LoginResponse {
-  team_name: string;
+  access_token: string;
 }
 
 export type UserType = {
   isLogin: boolean;
-  teamName: string | null;
+  name: string | null;
 };
