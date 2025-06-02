@@ -3,7 +3,7 @@ import ReactQueryProvider from "../providers/ReactQueryProvider";
 import RecoilProvider from "../providers/RecoilProvider";
 import StyledComponentProvider from "../providers/StyledComponentProvider";
 
-import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import LayoutWrapper from "@/components/ui/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
 import { cookies, headers } from "next/headers";
 import { DeviceProvider } from "@/providers/DeviceContext";
