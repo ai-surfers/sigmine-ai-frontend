@@ -10,3 +10,7 @@ interface WorkspaceType {
 export interface WorkspaceListType {
   items: WorkspaceType[];
 }
+
+export interface CreateWorkspaceType {
+  step: number;
+}

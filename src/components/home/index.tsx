@@ -3,7 +3,6 @@
 import styled from "styled-components";
 import WelcomeBanner from "./WelcomeBanner";
 import WorkspaceList from "./WorkspaceList";
-import { Flex } from "antd";
 
 const Home = () => {
   return (

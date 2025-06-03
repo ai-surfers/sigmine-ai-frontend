@@ -3,8 +3,15 @@ import { Button, Icon, Text } from "ai-surfers-design-system";
 import { Flex } from "antd";
 import Image from "next/image";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 const WelcomeBanner = () => {
+  const route = useRouter();
+
+  const handleClickNewButton = () => {
+    route.push("/workspace/new");
+  };
+
   return (
     <Flex vertical>
       <Image
@@ -16,7 +23,11 @@ const WelcomeBanner = () => {
         priority
       />
       <ButtonWrapper>
-        <Button hierarchy="sigmineSecondary" size={66}>
+        <Button
+          hierarchy="sigmineSecondary"
+          size={66}
+          onClick={handleClickNewButton}
+        >
           <Flex
             gap={41}
             justify="start"
