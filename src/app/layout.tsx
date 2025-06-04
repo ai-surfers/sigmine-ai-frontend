@@ -26,8 +26,7 @@ export default async function RootLayout({
   );
 
   const accessToken = getCookie(COOKIE_KEYS.ACCESS_TOKEN);
-  const user = accessToken ? await serverUserState(accessToken) : null;
-  console.log(user, accessToken);
+  const user = await serverUserState(accessToken);
 
   return (
     <DeviceProvider isUnderTablet={isUnderTablet} isMobile={isMobile}>

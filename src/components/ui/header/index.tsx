@@ -3,13 +3,22 @@
 import { useUser } from "@/hooks/auth/useUser";
 import { Flex } from "antd";
 import LogoutButton from "./LogoutButton";
-import LoginButton from "./LoginButton";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Text } from "ai-surfers-design-system";
+import { useEffect } from "react";
+import { routedLogout } from "@/apis/auth/clientLogin";
 
 const Header = () => {
-  const { userData } = useUser();
+  const { userData, resetUserState } = useUser();
+
+  useEffect(() => {
+    if (!userData.isLogin && window.location.pathname !== "/login") {
+      routedLogout();
+      resetUserState();
+      window.location.href = "/login";
+    }
+  }, [userData.isLogin]);
 
   return (
     <Flex
