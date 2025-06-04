@@ -2,7 +2,7 @@ import { createWorkspaceState } from "@/states/createWorkspaceState";
 import { Text } from "ai-surfers-design-system";
 import { Flex } from "antd";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 const STEP_CONTENTS = [
@@ -13,27 +13,21 @@ const STEP_CONTENTS = [
 ];
 
 const StepLNB = () => {
-  const [currentState, setCurrentState] = useRecoilState(createWorkspaceState);
-
-  const handleClickStepButton = (newStep: number) => {
-    setCurrentState({ step: newStep });
-  };
+  const { step } = useRecoilValue(createWorkspaceState);
 
   return (
     <Flex vertical style={{ marginLeft: "24px" }}>
       {STEP_CONTENTS.map((item, index) => (
-        <StepButton onClick={() => handleClickStepButton(index + 1)}>
+        <StepButton>
           <Flex gap={8}>
-            <RoundNumber $isFocused={index + 1 === currentState.step}>
+            <RoundNumber $isFocused={index + 1 === step}>
               <Text font="c2_11_med" color="white">
                 {index + 1}
               </Text>
             </RoundNumber>
             <Text
-              font={
-                index + 1 === currentState.step ? "c1_12_semi" : "c1_12_reg"
-              }
-              color={index + 1 === currentState.step ? "G_600" : "G_300"}
+              font={index + 1 === step ? "c1_12_semi" : "c1_12_reg"}
+              color={index + 1 === step ? "G_600" : "G_300"}
             >
               {item}
             </Text>
@@ -49,6 +43,7 @@ export default StepLNB;
 const StepButton = styled.button`
   width: 148px;
   height: 34px;
+  cursor: default;
 `;
 
 const RoundNumber = styled.div<{ $isFocused: boolean }>`

@@ -1,3 +1,5 @@
+import { IndustryKey } from "@/constants/industry";
+
 interface WorkspaceType {
   id: string;
   name: string;
@@ -13,4 +15,5 @@ export interface WorkspaceListType {
 
 export interface CreateWorkspaceType {
   step: number;
+  step1Res: IndustryKey | "";
 }

@@ -1,7 +1,6 @@
 "use client";
 
-import { useAutoLogin } from "@/hooks/useAutoLogin";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks/auth/useUser";
 import { Flex } from "antd";
 import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";

@@ -2,8 +2,12 @@ import React from "react";
 import Chat from "../ui/Chat";
 import { Text } from "ai-surfers-design-system";
 import { Flex } from "antd";
+import { useRecoilValue } from "recoil";
+import { createWorkspaceState } from "@/states/createWorkspaceState";
+import styled from "styled-components";
+import { useUser } from "@/hooks/auth/useUser";
 
-const Chats = () => {
+const LeftChat1 = () => {
   return (
     <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
       <Flex vertical gap={4}>
@@ -24,4 +28,53 @@ const Chats = () => {
   );
 };
 
+const RightChat = ({
+  name,
+  picture,
+  response,
+}: {
+  name: string;
+  picture: string;
+  response: string;
+}) => {
+  return (
+    <Chat name={name} picture={picture} position="right">
+      <ChatBubble>
+        <Text font="b2_16_med" color="G_600">
+          {response}
+        </Text>
+      </ChatBubble>
+    </Chat>
+  );
+};
+
+const Chats = () => {
+  const { step, step1Res } = useRecoilValue(createWorkspaceState);
+  const { userData } = useUser();
+  return (
+    <ChatsWrapper>
+      {/* 1단계 */}
+      <LeftChat1 />
+      {step1Res !== "" && (
+        <RightChat
+          name={userData.nickname}
+          picture={userData.picture}
+          response={step1Res}
+        />
+      )}
+    </ChatsWrapper>
+  );
+};
+
 export default Chats;
+
+const ChatsWrapper = styled.div`
+  ${({ theme }) => theme.mixins.flexBox("column", "start", "space-between")};
+  height: 100%;
+`;
+
+const ChatBubble = styled.div`
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.G_100};
+  padding: 12px;
+`;

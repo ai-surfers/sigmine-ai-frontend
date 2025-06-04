@@ -17,7 +17,7 @@ const Chat = ({
   position = "right",
 }: PropsWithChildren<ChatProps>) => {
   return (
-    <Flex vertical gap={12} justify={position === "right" ? "start" : "end"}>
+    <Flex vertical gap={12} align={position === "left" ? "start" : "end"}>
       <ProfileSection>
         <Image src={picture} width={24} height={24} alt="profile-picture" />
         <Text font="b3_14_med" color="G_400">

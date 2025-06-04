@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Text, Button } from "ai-surfers-design-system";
 import { useDeviceSize } from "@/providers/DeviceContext";
-import { useGoogleLogin } from "@/hooks/useGoogleLogin";
-import { useUser } from "@/hooks/useUser";
+import { useGoogleLogin } from "@/hooks/auth/useGoogleLogin";
+import { useUser } from "@/hooks/auth/useUser";
 import { getMe } from "@/apis/auth/getMe";
 
 const Login = () => {
@@ -96,7 +96,13 @@ const Login = () => {
           style={{ justifyContent: "center" }}
           width="100%"
         >
-          {isLoading ? <CustomSpin /> : "GOOGLE로 로그인"}
+          {isLoading ? (
+            <CustomSpin />
+          ) : (
+            <Text font="b2_16_semi" color="white">
+              GOOGLE로 로그인
+            </Text>
+          )}
         </Button>
       </LoginWrapper>
     </Flex>
