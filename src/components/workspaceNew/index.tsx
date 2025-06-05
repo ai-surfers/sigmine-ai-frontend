@@ -40,14 +40,14 @@ const Background = styled.div`
 `;
 
 const LNBSection = styled.div`
-  flex: 0.225;
+  flex: 0.3;
   display: flex;
   justify-content: start;
   align-items: start;
 `;
 
 const ChattingSection = styled.div`
-  flex: 0.775;
+  flex: 0.7;
   ${({ theme }) => theme.mixins.flexBox("column", "space-between", "start")};
   max-width: 692px;
   width: 100%;

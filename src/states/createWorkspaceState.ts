@@ -3,9 +3,10 @@ import { atom } from "recoil";
 
 export const initialCreateWorkspaceState: CreateWorkspaceType = {
   step: 1,
-  step1Res: "",
-  step2Res: "",
-  step3Res: "",
+  step1Res: null,
+  step2Res: null,
+  step3Res: null,
+  step4Res: null,
 };
 
 export const createWorkspaceState = atom<CreateWorkspaceType>({

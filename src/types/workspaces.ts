@@ -28,9 +28,11 @@ export type IndustryValue = {
   emoji: IconNameType;
 };
 
+export type SizeKey = "1" | "2-5" | "6-30" | "31-100" | "101-500" | "501";
 export interface CreateWorkspaceType {
   step: number;
-  step1Res: IndustryKey | "";
-  step2Res: string;
-  step3Res: string;
+  step1Res: IndustryKey | null;
+  step2Res: SizeKey | null;
+  step3Res: string | null;
+  step4Res: string | null;
 }
