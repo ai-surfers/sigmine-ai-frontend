@@ -8,11 +8,13 @@ import styled from "styled-components";
 import { useUser } from "@/hooks/auth/useUser";
 
 const LeftChat1 = () => {
+  const { userData } = useUser();
   return (
     <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
       <Flex vertical gap={4}>
         <Text font="b2_16_reg" color="G_800">
-          시그마인에 오신 것을 환영합니다, 김윤권 님! 함께 일하게 되어 기쁩니다.
+          시그마인에 오신 것을 환영합니다, {userData.email} 님! 함께 일하게 되어
+          기쁩니다.
           <br />
           먼저 귀하와 귀사에 대해 자세히 알아보기 위해 몇 가지 간단한 질문으로
           시작하겠습니다.
@@ -22,6 +24,21 @@ const LeftChat1 = () => {
         </Text>
         <Text font="b2_16_med" color="sigmine_primary">
           귀하의 회사는 어떤 산업 분야에 속해있나요?
+        </Text>
+      </Flex>
+    </Chat>
+  );
+};
+
+const LeftChat2 = () => {
+  return (
+    <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
+      <Flex vertical gap={4}>
+        <Text font="b2_16_reg" color="G_800">
+          좋습니다!
+        </Text>
+        <Text font="b2_16_med" color="sigmine_primary">
+          회사의 규모는 어떻게 되시나요?
         </Text>
       </Flex>
     </Chat>
@@ -49,7 +66,7 @@ const RightChat = ({
 };
 
 const Chats = () => {
-  const { step, step1Res } = useRecoilValue(createWorkspaceState);
+  const { step, step1Res, step2Res } = useRecoilValue(createWorkspaceState);
   const { userData } = useUser();
   return (
     <ChatsWrapper>
@@ -57,9 +74,18 @@ const Chats = () => {
       <LeftChat1 />
       {step1Res !== "" && (
         <RightChat
-          name={userData.nickname}
+          name={userData.email}
           picture={userData.picture}
           response={step1Res}
+        />
+      )}
+      {/* 2단계 */}
+      {step >= 2 && <LeftChat2 />}
+      {step >= 2 && step2Res !== "" && (
+        <RightChat
+          name={userData.email}
+          picture={userData.picture}
+          response={step2Res}
         />
       )}
     </ChatsWrapper>
@@ -71,6 +97,7 @@ export default Chats;
 const ChatsWrapper = styled.div`
   ${({ theme }) => theme.mixins.flexBox("column", "start", "space-between")};
   height: 100%;
+  gap: 20px;
 `;
 
 const ChatBubble = styled.div`

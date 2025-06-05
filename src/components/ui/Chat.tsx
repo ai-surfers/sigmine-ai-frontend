@@ -14,12 +14,18 @@ const Chat = ({
   picture,
   name,
   children,
-  position = "right",
+  position = "left",
 }: PropsWithChildren<ChatProps>) => {
   return (
     <Flex vertical gap={12} align={position === "left" ? "start" : "end"}>
-      <ProfileSection>
-        <Image src={picture} width={24} height={24} alt="profile-picture" />
+      <ProfileSection $position={position}>
+        <Image
+          src={picture}
+          width={24}
+          height={24}
+          alt="profile-picture"
+          style={{ borderRadius: "100%" }}
+        />
         <Text font="b3_14_med" color="G_400">
           {name}
         </Text>
@@ -31,7 +37,7 @@ const Chat = ({
 
 export default Chat;
 
-const ProfileSection = styled.div`
+const ProfileSection = styled.div<{ $position: "left" | "right" }>`
   ${({ theme }) => theme.mixins.flexBox("row", "start", "center")};
-  gap: 8px;
+  gap: ${({ $position }) => ($position === "left" ? "12px" : "8px")};
 `;

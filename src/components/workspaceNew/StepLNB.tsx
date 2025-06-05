@@ -18,7 +18,7 @@ const StepLNB = () => {
   return (
     <Flex vertical style={{ marginLeft: "24px" }}>
       {STEP_CONTENTS.map((item, index) => (
-        <StepButton>
+        <StepButton key={`StepLnb-${index}`}>
           <Flex gap={8}>
             <RoundNumber $isFocused={index + 1 === step}>
               <Text font="c2_11_med" color="white">
