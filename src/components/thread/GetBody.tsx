@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
-import { Button, Flex, Spin, Input } from "antd";
+import { Button, Flex, Spin } from "antd";
 import { RefType } from "@/types/threads";
 import Title from "antd/es/typography/Title";
 import { usePostFullContents } from "@/hooks/mutations/usePostFullContents";
@@ -12,7 +12,7 @@ import { useScrollBottom } from "@/hooks/useScrollBottom";
 import { useThreads } from "@/hooks/useThreads";
 
 const schema = z.object({
-  selected: z.string().min(1, "문장을 입력하거나 선택해주세요!"),
+  selected: z.string().min(1, "하나 이상 선택해주세요!"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -71,40 +71,33 @@ const GetBody = ({ scrollRef }: RefType) => {
     <Wrapper $isVisible={threadsData.step >= 2}>
       <Flex vertical gap={30}>
         <Title level={5}>
-          10개의 후보들 중에서 마음에 드는 첫 문장을 선택하거나 직접 입력해주세
-          요! 선택하신 문장을 바탕으로 스레드 내용을 만들어 드릴게요.
+          10개의 후보들 중에서 마음에 드는 첫 문장을 선택해주세요! 선택해주신 첫
+          문장을 바탕으로 스레드 내용을 만들어 드릴게요.
         </Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="selected"
             control={control}
             render={({ field }) => (
-              <Flex vertical gap={8}>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {threadsData.first_sentence_candidates.map((firstSentence) => (
-                    <Button
-                      key={firstSentence}
-                      onClick={() => field.onChange(firstSentence)}
-                      style={{
-                        padding: 10,
-                        border:
-                          field.value === firstSentence
-                            ? "2px solid blue"
-                            : "1px solid gray",
-                        background:
-                          field.value === firstSentence ? "#e0f0ff" : "#fff",
-                      }}
-                    >
-                      {firstSentence}
-                    </Button>
-                  ))}
-                </div>
-                <Input
-                  placeholder="첫 문장 직접 입력"
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
-                />
-              </Flex>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {threadsData.first_sentence_candidates.map((firstSentence) => (
+                  <Button
+                    key={firstSentence}
+                    onClick={() => field.onChange(firstSentence)}
+                    style={{
+                      padding: 10,
+                      border:
+                        field.value === firstSentence
+                          ? "2px solid blue"
+                          : "1px solid gray",
+                      background:
+                        field.value === firstSentence ? "#e0f0ff" : "#fff",
+                    }}
+                  >
+                    {firstSentence}
+                  </Button>
+                ))}
+              </div>
             )}
           />
           {errors.selected && (
