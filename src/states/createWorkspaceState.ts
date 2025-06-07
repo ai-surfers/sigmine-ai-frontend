@@ -1,7 +1,7 @@
-import { CreateWorkspaceType } from "@/types/workspaces";
+import { CreateWorkspaceStepType } from "@/types/workspaces";
 import { atom } from "recoil";
 
-export const initialCreateWorkspaceState: CreateWorkspaceType = {
+export const initialCreateWorkspaceState: CreateWorkspaceStepType = {
   step: 1,
   step1Res: null,
   step2Res: null,
@@ -9,7 +9,7 @@ export const initialCreateWorkspaceState: CreateWorkspaceType = {
   step4Res: null,
 };
 
-export const createWorkspaceState = atom<CreateWorkspaceType>({
+export const createWorkspaceState = atom<CreateWorkspaceStepType>({
   key: "createWorkspaceState",
   default: initialCreateWorkspaceState,
 });

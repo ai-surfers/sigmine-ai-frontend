@@ -31,7 +31,7 @@ export interface FirstSentenceResponseType {
   first_sentence_candidates: string[];
 }
 
-export interface PostThreadsAsyncs<T> {
+export interface BaseMutateResType<T> {
   onSuccess: (res: BaseResponse<T>) => void;
   onError: (e: AxiosError) => void;
 }

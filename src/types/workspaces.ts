@@ -29,10 +29,26 @@ export type IndustryValue = {
 };
 
 export type SizeKey = "1" | "2-5" | "6-30" | "31-100" | "101-500" | "501";
-export interface CreateWorkspaceType {
+export interface CreateWorkspaceStepType {
   step: number;
   step1Res: IndustryKey | null;
   step2Res: SizeKey | null;
   step3Res: string | null;
   step4Res: string | null;
+}
+
+export interface PostWorkspaceParamType {
+  workspace_name: string;
+  industry: IndustryKey;
+  company_size: SizeKey;
+  website: string;
+}
+
+export interface PostWorkspaceResType {
+  id: string;
+  name: string;
+  industry: IndustryKey;
+  company_size: SizeKey;
+  website: string;
+  created_at: string;
 }
