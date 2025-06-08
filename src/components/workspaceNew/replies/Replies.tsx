@@ -1,14 +1,20 @@
 import { Flex } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useRecoilValue } from "recoil";
 import { createWorkspaceState } from "@/states/createWorkspaceState";
 import Reply1 from "./Reply1";
 import Reply2 from "./Reply2";
 import Reply3 from "./Reply3";
 import Reply4 from "./Reply4";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimationContext } from "../index";
+import { Button } from "ai-surfers-design-system";
+import styled from "styled-components";
+import { useWorkspaceStep } from "@/hooks/useWorkspaceStep";
 
 const Replies = () => {
   const { resetStep, getCurrentStep } = useWorkspaceStep();
+  const { animationPhase, currentStep } = useContext(AnimationContext);
 
   const replies = [<Reply1 />, <Reply2 />, <Reply3 />, <Reply4 />];
 
@@ -17,17 +23,23 @@ const Replies = () => {
   }, []);
 
   return (
-    <Flex style={{ width: "100%", paddingTop: "96px" }}>
-      {replies[getCurrentStep - 1]}
-    </Flex>
+    <motion.div
+      initial={{ y: 0 }}
+      animate={{
+        y: animationPhase === "right-chat-show" ? 100 : 0,
+        opacity: animationPhase === "right-chat-show" ? 0 : 1,
+      }}
+      transition={{ duration: 1, ease: "easeInOut" }}
+      style={{ width: "100%", paddingTop: "96px" }}
+    >
+      <AnimatePresence>
+        <Flex style={{ width: "100%" }}>{replies[currentStep - 1]}</Flex>
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
 export default Replies;
-
-import { Button } from "ai-surfers-design-system";
-import styled from "styled-components";
-import { useWorkspaceStep } from "@/hooks/useWorkspaceStep";
 
 export const Wrapper = styled.div`
   display: flex;

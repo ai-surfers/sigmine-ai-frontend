@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { createContext, useContext, useState } from "react";
 import styled from "styled-components";
 import StepLNB from "./StepLNB";
 import Chats from "./Chats";
@@ -8,18 +8,44 @@ import { useRecoilValue } from "recoil";
 import { createWorkspaceState } from "@/states/createWorkspaceState";
 import Replies from "./replies/Replies";
 
+export type AnimationPhase =
+  | "idle"
+  | "reply-hide"
+  | "right-chat-show"
+  | "left-chat-show"
+  | "next-reply-show";
+
+export const AnimationContext = createContext<{
+  animationPhase: AnimationPhase;
+  setAnimationPhase: (phase: AnimationPhase) => void;
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+}>({
+  animationPhase: "idle",
+  setAnimationPhase: () => {},
+  currentStep: 1,
+  setCurrentStep: () => {},
+});
+
 const WorkSpaceNew = () => {
   const { step } = useRecoilValue(createWorkspaceState);
+  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>("idle");
+  const [currentStep, setCurrentStep] = useState(1);
+
   return (
-    <Background>
-      <LNBSection>
-        <StepLNB />
-      </LNBSection>
-      <ChattingSection>
-        <Chats />
-        <Replies />
-      </ChattingSection>
-    </Background>
+    <AnimationContext.Provider
+      value={{ animationPhase, setAnimationPhase, currentStep, setCurrentStep }}
+    >
+      <Background>
+        <LNBSection>
+          <StepLNB />
+        </LNBSection>
+        <ChattingSection>
+          <Chats />
+          <Replies />
+        </ChattingSection>
+      </Background>
+    </AnimationContext.Provider>
   );
 };
 
