@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, PROVIDER } from "@/apis/firebase";
-import { login } from "@/apis/auth/clientlogin";
+import { login } from "@/apis/auth/clientLogin";
 
 export const useGoogleLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
