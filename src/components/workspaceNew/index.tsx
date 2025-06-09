@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from "react";
 import styled from "styled-components";
 import StepLNB from "./StepLNB";
-import Chats from "./Chats";
+import Chats from "./chats/Chats";
 import { useRecoilValue } from "recoil";
 import { createWorkspaceState } from "@/states/createWorkspaceState";
 import Replies from "./replies/Replies";
