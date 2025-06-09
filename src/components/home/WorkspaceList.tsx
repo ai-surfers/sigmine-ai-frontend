@@ -7,13 +7,17 @@ import EmptyWorkspace from "./EmptyWorkspace";
 import styled from "styled-components";
 import { Text } from "ai-surfers-design-system";
 import WorkspaceBox from "./WorkspaceBox";
+import { WorkspaceType } from "@/types/workspaces";
 
-const WorkspaceList = () => {
-  const { data, isLoading } = useGetWorkspacesQuery();
+interface WorkspaceListProps {
+  data: WorkspaceType[];
+  isLoading: boolean;
+}
 
+const WorkspaceList = ({ data, isLoading }: WorkspaceListProps) => {
   if (isLoading) return <Spin />;
 
-  if (data?.items.length === 0) return <EmptyWorkspace />;
+  if (data.length === 0) return <EmptyWorkspace />;
 
   return (
     <Flex vertical gap={12.5} style={{ width: "100%", maxWidth: "1028px" }}>
@@ -22,11 +26,11 @@ const WorkspaceList = () => {
           생성된 워크스페이스
         </Text>
         <Text font="b3_14_reg" color="G_500">
-          {data?.items.length}개
+          {data.length}개
         </Text>
       </Flex>
       <Flex gap={12} wrap="wrap">
-        {data?.items.map((item) => (
+        {data.map((item: WorkspaceType) => (
           <WorkspaceBox
             id={item.id}
             name={item.name}

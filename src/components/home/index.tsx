@@ -3,12 +3,15 @@
 import styled from "styled-components";
 import WelcomeBanner from "./WelcomeBanner";
 import WorkspaceList from "./WorkspaceList";
+import { useGetWorkspacesQuery } from "@/hooks/queries/useGetWorkspaces";
 
 const Home = () => {
+  const { data, isLoading } = useGetWorkspacesQuery();
+
   return (
     <Wrapper>
-      <WelcomeBanner />
-      <WorkspaceList />
+      <WelcomeBanner isEmpty={data?.items.length === 0} />
+      <WorkspaceList data={data?.items || []} isLoading={isLoading} />
     </Wrapper>
   );
 };

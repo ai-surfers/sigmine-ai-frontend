@@ -5,7 +5,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
-const WelcomeBanner = () => {
+const WelcomeBanner = ({ isEmpty }: { isEmpty: boolean }) => {
   const route = useRouter();
 
   const handleClickNewButton = () => {
@@ -22,31 +22,33 @@ const WelcomeBanner = () => {
         alt="welcome"
         priority
       />
-      <ButtonWrapper>
-        <Button
-          hierarchy="sigmineSecondary"
-          size={66}
-          onClick={handleClickNewButton}
-        >
-          <Flex
-            gap={41}
-            justify="start"
-            align="center"
-            style={{ paddingRight: "72px" }}
+      {isEmpty && (
+        <ButtonWrapper>
+          <Button
+            hierarchy="sigmineSecondary"
+            size={66}
+            onClick={handleClickNewButton}
           >
-            <PlusBox>
-              <Icon name="Add" color="sigmine_primary" variant="Linear" />
-            </PlusBox>
-            <Text
-              font="b2_16_semi"
-              color="sigmine_primary"
-              style={{ width: "178px", letterSpacing: "-0.02rem" }}
+            <Flex
+              gap={41}
+              justify="start"
+              align="center"
+              style={{ paddingRight: "72px" }}
             >
-              SIGMINE 프로젝트 시작하기
-            </Text>
-          </Flex>
-        </Button>
-      </ButtonWrapper>
+              <PlusBox>
+                <Icon name="Add" color="sigmine_primary" variant="Linear" />
+              </PlusBox>
+              <Text
+                font="b2_16_semi"
+                color="sigmine_primary"
+                style={{ width: "178px", letterSpacing: "-0.02rem" }}
+              >
+                SIGMINE 프로젝트 시작하기
+              </Text>
+            </Flex>
+          </Button>
+        </ButtonWrapper>
+      )}
     </Flex>
   );
 };
