@@ -12,6 +12,7 @@ export const useModal = () => {
     backgroundImage,
     title,
     subtitle,
+    content,
     buttonText,
     onButtonClick,
   }: OpenModalParams) => {
@@ -20,6 +21,7 @@ export const useModal = () => {
       backgroundImage,
       title,
       subtitle,
+      content,
       buttonText,
       onButtonClick,
     });

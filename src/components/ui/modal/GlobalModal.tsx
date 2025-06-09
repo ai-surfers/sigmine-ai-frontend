@@ -39,32 +39,23 @@ const GlobalModal = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {modal.backgroundImage && (
-              <BackgroundImageWrapper>
-                <BackgroundImage
-                  src={modal.backgroundImage}
-                  alt="modal background"
-                />
-                <TextOverlay>
-                  <Flex vertical gap={8} align="start">
-                    <Text font="h2_20_semi" color="G_800">
-                      {modal.title}
-                    </Text>
-                    <Text
-                      font="b3_14_reg"
-                      color="G_600"
-                      style={{ textAlign: "start" }}
-                    >
-                      {modal.subtitle}
-                    </Text>
-                  </Flex>
-                </TextOverlay>
-              </BackgroundImageWrapper>
+              <BackgroundImage
+                src={modal.backgroundImage}
+                alt="modal background"
+              />
             )}
-            {!modal.backgroundImage && (
-              <ContentWrapper>
-                <Flex vertical gap={8} align="start">
-                  <Text font="h2_20_semi" color="G_800">
-                    {modal.title}
+            <ContentWrapper>
+              <TextContent vertical gap={8} align="start">
+                <Text font="h2_20_semi" color="G_800">
+                  {modal.title}
+                </Text>
+                <Flex>
+                  <Text
+                    font="b3_14_med"
+                    color="sigmine_primary"
+                    style={{ textAlign: "start" }}
+                  >
+                    {modal.content}
                   </Text>
                   <Text
                     font="b3_14_reg"
@@ -74,15 +65,13 @@ const GlobalModal = () => {
                     {modal.subtitle}
                   </Text>
                 </Flex>
-              </ContentWrapper>
-            )}
-            <ButtonWrapper>
-              <Flex gap={12} align="center" style={{ width: "100%" }}>
+              </TextContent>
+              <Flex gap={12} style={{ marginTop: "16px" }}>
                 <Button
                   hierarchy="default"
                   size={52}
                   onClick={handleClose}
-                  style={{ width: "120px" }}
+                  style={{ width: "120px", justifyContent: "center" }}
                 >
                   <Text font="b2_16_semi" color="G_600">
                     취소
@@ -92,14 +81,14 @@ const GlobalModal = () => {
                   hierarchy="sigminePrimary"
                   size={52}
                   onClick={handleButtonClick}
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", justifyContent: "center" }}
                 >
                   <Text font="b2_16_semi" color="white">
                     {modal.buttonText}
                   </Text>
                 </Button>
               </Flex>
-            </ButtonWrapper>
+            </ContentWrapper>
           </ModalContent>
         </ModalOverlay>
       )}
@@ -131,42 +120,26 @@ const ModalContent = styled(motion.div)`
   overflow: hidden;
 `;
 
-const BackgroundImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100px;
-`;
-
 const BackgroundImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: 100px;
   object-fit: cover;
-`;
-
-const TextOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  z-index: 0;
 `;
 
 const ContentWrapper = styled.div`
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  position: relative;
+  z-index: 1;
 `;
 
-const ButtonWrapper = styled.div`
-  height: 92px;
-  padding: 24px;
-  padding-top: 0;
-  display: flex;
-  align-items: flex-end;
-  width: 100%;
+const TextContent = styled(Flex)`
+  position: relative;
+  z-index: 1;
 `;

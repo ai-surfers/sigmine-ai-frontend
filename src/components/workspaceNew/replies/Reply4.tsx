@@ -49,15 +49,15 @@ const Reply4 = () => {
       company_size: validatedState.step2Res,
       website: validatedState.step3Res || "",
     };
-
     openModal({
       title: "워크스페이스 생성 확인",
-      subtitle: `${content}(으)로 워크스페이스를 만들까요?`,
+      content: content,
+      subtitle: "(으)로 워크스페이스를 만들까요?",
       buttonText: "워크스페이스 만들기",
+      backgroundImage: "/imgs/workspaces/bg-modal-workspace.png",
       onButtonClick: () => {
         handleSubmit(param);
       },
-      backgroundImage: "/imgs/workspaces/bg-modal-workspace.png",
     });
   };
 
