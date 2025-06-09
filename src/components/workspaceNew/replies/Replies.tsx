@@ -1,7 +1,5 @@
 import { Flex } from "antd";
 import React, { useEffect, useContext } from "react";
-import { useRecoilValue } from "recoil";
-import { createWorkspaceState } from "@/states/createWorkspaceState";
 import Reply1 from "./Reply1";
 import Reply2 from "./Reply2";
 import Reply3 from "./Reply3";
@@ -13,29 +11,46 @@ import styled from "styled-components";
 import { useWorkspaceStep } from "@/hooks/useWorkspaceStep";
 
 const Replies = () => {
-  const { resetStep, getCurrentStep } = useWorkspaceStep();
+  const { resetStep } = useWorkspaceStep();
   const { animationPhase, currentStep } = useContext(AnimationContext);
 
-  const replies = [<Reply1 />, <Reply2 />, <Reply3 />, <Reply4 />];
+  const replies = [
+    () => <Reply1 />,
+    () => <Reply2 />,
+    () => <Reply3 />,
+    () => <Reply4 />,
+  ];
+
+  const CurrentReply = replies[currentStep - 1];
 
   useEffect(() => {
     resetStep();
   }, []);
 
   return (
-    <motion.div
-      initial={{ y: 0 }}
-      animate={{
-        y: animationPhase === "right-chat-show" ? 100 : 0,
-        opacity: animationPhase === "right-chat-show" ? 0 : 1,
-      }}
-      transition={{ duration: 1, ease: "easeInOut" }}
-      style={{ width: "100%", paddingTop: "96px" }}
-    >
-      <AnimatePresence>
-        <Flex style={{ width: "100%" }}>{replies[currentStep - 1]}</Flex>
-      </AnimatePresence>
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0, y: animationPhase === "backward" ? -50 : 50 }}
+        animate={{
+          y: animationPhase === "next-reply-show" ? 100 : 0,
+          opacity: animationPhase === "next-reply-show" ? 0 : 1,
+        }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        exit={{ opacity: 0, y: animationPhase === "backward" ? 100 : 50 }}
+        style={{
+          display: "flex",
+          alignItems: "end",
+          width: "100%",
+          height: "360px",
+          boxSizing: "border-box",
+        }}
+      >
+        <Flex style={{ width: "100%", paddingTop: "calc(360px - 100%)" }}>
+          <CurrentReply />
+        </Flex>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

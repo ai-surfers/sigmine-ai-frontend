@@ -8,22 +8,30 @@ import styled from "styled-components";
 import { useUser } from "@/hooks/auth/useUser";
 import { INDUSTRY, SIZE } from "@/constants/workspace";
 import { motion, AnimatePresence } from "framer-motion";
-import { AnimationContext, AnimationPhase } from "./index";
+import { AnimationContext } from "./index";
 
 const LeftChat1 = () => {
   const { userData } = useUser();
+  const { animationPhase } = useContext(AnimationContext);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (animationPhase === "left-chat-show") {
+      setIsVisible(true);
+    }
+  }, [animationPhase]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
         <Flex vertical gap={4}>
           <Text font="b2_16_reg" color="G_800">
-            시그마인에 오신 것을 환영합니다, {userData.email} 님! 함께 일하게
-            되어 기쁩니다.
+            시그마인에 오신 것을 환영합니다, {userData.email.split("@")[0]} 님!
+            함께 일하게 되어 기쁩니다.
             <br />
             먼저 귀하와 귀사에 대해 자세히 알아보기 위해 몇 가지 간단한 질문으로
             시작하겠습니다.
@@ -41,22 +49,11 @@ const LeftChat1 = () => {
 };
 
 const LeftChat2 = () => {
-  const { animationPhase, currentStep } = useContext(AnimationContext);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (animationPhase === "left-chat-show" && currentStep === 2) {
-      setIsVisible(true);
-    }
-  }, [animationPhase, currentStep]);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        y: isVisible ? 0 : 50,
-      }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
@@ -74,22 +71,11 @@ const LeftChat2 = () => {
 };
 
 const LeftChat3 = () => {
-  const { animationPhase, currentStep } = useContext(AnimationContext);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (animationPhase === "left-chat-show" && currentStep === 3) {
-      setIsVisible(true);
-    }
-  }, [animationPhase, currentStep]);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        y: isVisible ? 0 : 50,
-      }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
@@ -106,22 +92,11 @@ const LeftChat3 = () => {
 };
 
 const LeftChat4 = () => {
-  const { animationPhase, currentStep } = useContext(AnimationContext);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (animationPhase === "left-chat-show" && currentStep === 4) {
-      setIsVisible(true);
-    }
-  }, [animationPhase, currentStep]);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        y: isVisible ? 0 : 50,
-      }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <Chat name="시그마인 AI" picture="/imgs/workspaces/logo-profile.png">
@@ -138,33 +113,16 @@ const LeftChat4 = () => {
   );
 };
 
-const RightChat = ({
-  name,
-  picture,
-  response,
-  step,
-}: {
-  name: string;
-  picture: string;
-  response: string;
-  step: number;
-}) => {
-  const { animationPhase, currentStep } = useContext(AnimationContext);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (animationPhase === "right-chat-show" && currentStep === step) {
-      setIsVisible(true);
-    }
-  }, [animationPhase, currentStep, step]);
+const RightChat = ({ response }: { response: string }) => {
+  const { userData } = useUser();
+  const name = userData.email.split("@")[0];
+  const picture = userData.picture;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        y: isVisible ? 0 : 50,
-      }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <Chat name={name} picture={picture} position="right">
@@ -194,7 +152,7 @@ const Chats = () => {
           const targetScroll = container.scrollHeight - container.clientHeight;
           const startScroll = container.scrollTop;
           const distance = targetScroll - startScroll;
-          const duration = 250; // 0.25초
+          const duration = 1000; // 1초
           const startTime = performance.now();
 
           const animateScroll = (currentTime: number) => {
@@ -235,52 +193,111 @@ const Chats = () => {
           }, 500);
         }, 500);
       }, 500);
+    } else if (step < currentStep) {
+      setAnimationPhase("backward");
+      setTimeout(() => {
+        setCurrentStep(step);
+        setTimeout(() => {
+          setAnimationPhase("next-reply-show");
+          setTimeout(() => {
+            setAnimationPhase("idle");
+          }, 500);
+        }, 500);
+      }, 500);
     }
   }, [step, currentStep, setAnimationPhase, setCurrentStep]);
 
   return (
     <ChatsWrapper ref={chatContainerRef}>
-      <AnimatePresence>
-        {/* 1단계 */}
-        <LeftChat1 />
+      {/* 1단계 */}
+      <LeftChat1 />
+      <AnimatePresence mode="wait">
         {!!step1Res && (
-          <RightChat
-            name={userData.email}
-            picture={userData.picture}
-            response={INDUSTRY.get(step1Res)?.ko ?? ""}
-            step={1}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <RightChat response={INDUSTRY.get(step1Res)?.ko ?? ""} />
+          </motion.div>
         )}
-        {/* 2단계 */}
-        {step >= 2 && <LeftChat2 />}
+      </AnimatePresence>
+      {/* 2단계 */}
+      <AnimatePresence mode="wait">
+        {step >= 2 && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <LeftChat2 />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
         {step >= 2 && !!step2Res && (
-          <RightChat
-            name={userData.email}
-            picture={userData.picture}
-            response={SIZE.get(step2Res) ?? ""}
-            step={2}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <RightChat response={SIZE.get(step2Res) ?? ""} />
+          </motion.div>
         )}
-        {/* 3단계 */}
-        {step >= 3 && <LeftChat3 />}
+      </AnimatePresence>
+      {/* 3단계 */}
+      <AnimatePresence mode="wait">
+        {step >= 3 && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <LeftChat3 />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
         {step >= 3 && step3Res !== null && (
-          <RightChat
-            name={userData.email}
-            picture={userData.picture}
-            response={step3Res === "" ? "나중에 입력할게요." : step3Res}
-            step={3}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <RightChat
+              response={step3Res === "" ? "나중에 입력할게요." : step3Res}
+            />
+          </motion.div>
         )}
-
-        {/* 4단계 */}
-        {step >= 4 && <LeftChat4 />}
+      </AnimatePresence>
+      {/* 4단계 */}
+      <AnimatePresence mode="wait">
+        {step >= 4 && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <LeftChat4 />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
         {step >= 4 && step4Res !== null && (
-          <RightChat
-            name={userData.email}
-            picture={userData.picture}
-            response={step4Res}
-            step={4}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <RightChat response={step4Res} />
+          </motion.div>
         )}
       </AnimatePresence>
     </ChatsWrapper>

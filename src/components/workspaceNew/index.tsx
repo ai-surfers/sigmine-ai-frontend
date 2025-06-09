@@ -13,7 +13,9 @@ export type AnimationPhase =
   | "reply-hide"
   | "right-chat-show"
   | "left-chat-show"
-  | "next-reply-show";
+  | "next-reply-show"
+  | "backward"
+  | "previous-reply-show";
 
 export const AnimationContext = createContext<{
   animationPhase: AnimationPhase;
