@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 const envFilePath = path.resolve(
   __dirname,
   "sigmine-frontend-envs/.env.next." +
-    (process.env.NODE_ENV || "development")
+    (process.env.APP_ENV || process.env.NODE_ENV || "development")
 );
 
 // 환경변수 로드
