@@ -6,6 +6,7 @@ import { Text } from "ai-surfers-design-system";
 import { Flex } from "antd";
 import styled from "styled-components";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 const WorkspaceBox = ({
   id,
   name,
@@ -37,8 +38,13 @@ const WorkspaceBox = ({
     Other: "/imgs/workspaces/badge-etc.png",
   };
 
+  const route = useRouter();
+  const handleClick = () => {
+    route.push(`/thread`);
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handleClick}>
       <Image
         src={industryBg[industry]}
         alt={industry}
