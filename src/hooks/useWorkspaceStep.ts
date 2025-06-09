@@ -38,6 +38,7 @@ export const useWorkspaceStep = () => {
           break;
         case 4:
           updatedState.step3Res = null;
+          updatedState.step4Res = null;
           break;
       }
 

@@ -1,14 +1,16 @@
 import { Button, Icon, Input, Text } from "ai-surfers-design-system";
 import { Flex } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useWorkspaceStep } from "@/hooks/useWorkspaceStep";
 import { PostWorkspaceParamType } from "@/types/workspaces";
 import { usePostWorkspaces } from "@/hooks/mutations/usePostWorkplaces";
 import { Wrapper } from "./Replies";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/hooks/useModal";
 
 const Reply4 = () => {
-  const { goBack, setStepResult, getValidatedState } = useWorkspaceStep();
+  const { goBack, setStepResult, getValidatedState, workspaceStep } =
+    useWorkspaceStep();
   const [content, setContent] = useState("");
 
   const handleClickBackButton = () => {
@@ -31,6 +33,8 @@ const Reply4 = () => {
     },
   });
 
+  const { openModal } = useModal();
+
   const handleClickCompleteButton = () => {
     if (!content) return;
 
@@ -46,8 +50,22 @@ const Reply4 = () => {
       website: validatedState.step3Res || "",
     };
 
-    handleSubmit(param);
+    openModal({
+      title: "워크스페이스 생성 확인",
+      subtitle: `${content}(으)로 워크스페이스를 만들까요?`,
+      buttonText: "워크스페이스 만들기",
+      onButtonClick: () => {
+        handleSubmit(param);
+      },
+      backgroundImage: "/imgs/workspaces/bg-modal-workspace.png",
+    });
   };
+
+  useEffect(() => {
+    if (workspaceStep.step4Res) {
+      setContent(workspaceStep.step4Res);
+    }
+  }, [workspaceStep.step4Res]);
 
   return (
     <Flex vertical gap={12} style={{ width: "100%" }}>
