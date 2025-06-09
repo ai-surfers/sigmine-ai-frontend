@@ -1,6 +1,6 @@
 import { IconNameType } from "ai-surfers-design-system";
 
-interface WorkspaceType {
+export interface WorkspaceType {
   id: string;
   name: string;
   industry: string;

@@ -3,6 +3,7 @@ import ReactQueryProvider from "../providers/ReactQueryProvider";
 import RecoilProvider from "../providers/RecoilProvider";
 import StyledComponentProvider from "../providers/StyledComponentProvider";
 import GlobalModal from "@/components/ui/modal/GlobalModal";
+
 import LayoutWrapper from "@/components/ui/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
 import { headers } from "next/headers";
