@@ -2,7 +2,7 @@ import { POST } from "@/apis/client";
 import {
   FirstSenteceParamsType,
   FirstSentenceResponseType,
-  PostThreadsAsyncs,
+  BaseMutateResType,
 } from "@/types/threads";
 import { useMutation } from "@tanstack/react-query";
 
@@ -17,7 +17,7 @@ async function postFirstSentence({ reference }: FirstSenteceParamsType) {
 export const usePostFirstSentence = ({
   onSuccess,
   onError,
-}: PostThreadsAsyncs<FirstSentenceResponseType>) => {
+}: BaseMutateResType<FirstSentenceResponseType>) => {
   return useMutation({
     mutationFn: ({ reference }: FirstSenteceParamsType) =>
       postFirstSentence({ reference }),

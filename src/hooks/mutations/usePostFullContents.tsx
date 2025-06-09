@@ -2,7 +2,7 @@ import { POST } from "@/apis/client";
 import {
   FullContentParamsType,
   FullContentResponseType,
-  PostThreadsAsyncs,
+  BaseMutateResType,
 } from "@/types/threads";
 import { useMutation } from "@tanstack/react-query";
 
@@ -23,7 +23,7 @@ async function postFullContents({
 export const usePostFullContents = ({
   onSuccess,
   onError,
-}: PostThreadsAsyncs<FullContentResponseType>) => {
+}: BaseMutateResType<FullContentResponseType>) => {
   return useMutation({
     mutationFn: ({ first_sentence, reference }: FullContentParamsType) =>
       postFullContents({ first_sentence, reference }),

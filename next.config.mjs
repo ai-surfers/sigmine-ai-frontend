@@ -34,6 +34,9 @@ const nextConfig = {
         // NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
         //     process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   },
+  images: {
+    domains: ["lh3.googleusercontent.com"],
+  },
 };
 
 export default nextConfig;

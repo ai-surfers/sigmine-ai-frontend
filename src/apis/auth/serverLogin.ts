@@ -1,9 +1,6 @@
 "use server";
 
-import { initialUserState } from "@/states/userState";
 import { MeResponse, UserType } from "@/types/auth";
-import { COOKIE_KEYS } from "@/utils/clientCookieUtils";
-import { deleteCookie } from "@/utils/cookieUtils";
 
 export async function serverMe(accessToken: string): Promise<MeResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/identities/me`, {

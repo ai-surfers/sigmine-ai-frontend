@@ -1,8 +1,8 @@
 "use client";
 
 import { useRecoilState } from "recoil";
-import { initialUserState, userState } from "../states/userState";
 import { MeResponse } from "@/types/auth";
+import { initialUserState, userState } from "@/states/userState";
 
 /**
  * useUser Hook

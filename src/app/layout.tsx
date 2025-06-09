@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import RecoilProvider from "../providers/RecoilProvider";
 import StyledComponentProvider from "../providers/StyledComponentProvider";
+import GlobalModal from "@/components/ui/modal/GlobalModal";
 
-import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import LayoutWrapper from "@/components/ui/layout/LayoutWrapper";
 import { detectDevice } from "@/utils/deviceUtils";
 import { headers } from "next/headers";
 import { DeviceProvider } from "@/providers/DeviceContext";
@@ -26,8 +27,7 @@ export default async function RootLayout({
   );
 
   const accessToken = getCookie(COOKIE_KEYS.ACCESS_TOKEN);
-  const user = accessToken ? await serverUserState(accessToken) : null;
-  console.log(user, accessToken);
+  const user = await serverUserState(accessToken);
 
   return (
     <DeviceProvider isUnderTablet={isUnderTablet} isMobile={isMobile}>
@@ -39,6 +39,7 @@ export default async function RootLayout({
             <ReactQueryProvider>
               <RecoilProvider user={user}>
                 <LayoutWrapper>{children}</LayoutWrapper>
+                <GlobalModal />
               </RecoilProvider>
             </ReactQueryProvider>
           </StyledComponentProvider>
